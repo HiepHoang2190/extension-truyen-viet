@@ -479,7 +479,7 @@ exports.NhatTruyenInfo = {
     name: 'NhatTruyen',
     icon: 'icon.png',
     author: 'AlanNois',
-    authorWebsite: 'https://github.com/AlanNois/',
+    authorWebsite: 'https://github.com/HiepHoang2190/',
     description: 'Extension that pulls manga from NhatTruyen.',
     contentRating: types_1.ContentRating.EVERYONE,
     websiteBaseURL: DOMAIN,

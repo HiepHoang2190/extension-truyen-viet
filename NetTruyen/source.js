@@ -479,7 +479,7 @@ exports.NetTruyenInfo = {
     name: 'NetTruyen',
     icon: 'icon.png',
     author: 'AlanNois',
-    authorWebsite: 'https://github.com/AlanNois/',
+    authorWebsite: 'https://github.com/HiepHoang2190/',
     description: 'Extension that pulls manga from NetTruyen.',
     contentRating: types_1.ContentRating.EVERYONE,
     websiteBaseURL: DOMAIN,

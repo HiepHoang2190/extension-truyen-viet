@@ -475,7 +475,7 @@ exports.DocTruyen3QInfo = {
     name: 'DocTruyen3Q',
     icon: 'icon.png',
     author: 'AlanNois',
-    authorWebsite: 'https://github.com/AlanNois',
+    authorWebsite: 'https://github.com/HiepHoang2190',
     description: 'Extension that pulls manga from DocTruyen3Q',
     contentRating: types_1.ContentRating.MATURE,
     websiteBaseURL: DOMAIN,

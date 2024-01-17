@@ -1457,7 +1457,7 @@ exports.BaoTangTruyenTranhInfo = {
     name: 'BaoTangTruyenTranh',
     icon: 'icon.png',
     author: 'AlanNois',
-    authorWebsite: 'https://github.com/AlanNois',
+    authorWebsite: 'https://github.com/HiepHoang2190',
     description: 'Extension that pulls manga from BaoTangTruyenTranh',
     websiteBaseURL: DOMAIN,
     contentRating: types_1.ContentRating.EVERYONE,
