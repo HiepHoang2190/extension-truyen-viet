@@ -475,7 +475,7 @@ const isLastPage = ($) => {
 };
 exports.isLastPage = isLastPage;
 exports.TruyengihotInfo = {
-    version: '1.0.4',
+    version: '1.0.5',
     name: 'Truyengihot',
     icon: 'icon.png',
     author: 'AlanNois',
