@@ -475,10 +475,10 @@ const isLastPage = ($) => {
 };
 exports.isLastPage = isLastPage;
 exports.TruyengihotInfo = {
-    version: '1.0.6',
+    version: '1.0.7',
     name: 'Truyengihot',
     icon: 'icon.png',
-    author: 'HiepHoang',
+    author: 'HiepHoang1',
     authorWebsite: 'https://github.com/HiepHoang2190/',
     description: 'Extension that pulls manga from Truyengihot.',
     contentRating: types_1.ContentRating.EVERYONE,
@@ -594,8 +594,8 @@ class Truyengihot {
         search.genres = genres.join(",");
         search.exgenres = exgenres.join(",");
         const paramExgenres = search.exgenres ? `&notgenres=${search.exgenres}` : '';
-        const url = `${DOMAIN}${query.title ? '/tim-truyen' : '/tim-truyen-nang-cao'}`;
-        const param = encodeURI(`?keyword=${query.title ?? ''}&genres=${search.genres}${paramExgenres}&gender=${search.gender}&status=${search.status}&minchapter=${search.minchapter}&sort=${search.sort}&page=${page}`);
+        const url = `${DOMAIN}${query.title ? '/danh-sach-truyen.html' : '/danh-sach-truyen.html'}`;
+        const param = encodeURI(`?text_add=${query.title ?? ''}&genres=${search.genres}${paramExgenres}&gender=${search.gender}&status=${search.status}&minchapter=${search.minchapter}&sort=${search.sort}&page=${page}`);
         const $ = await this.DOMHTML(url + param);
         const tiles = this.parser.parseSearchResults($);
         metadata = !(0, exports.isLastPage)($) ? { page: page + 1 } : undefined;
@@ -610,9 +610,9 @@ class Truyengihot {
             // App.createHomeSection({ id: 'featured', title: "Truyện Ngôn Tình Mới", containsMoreItems: false, type: HomeSectionType.featured }),
             App.createHomeSection({ id: 'new_18', title: "Truyện 18+ Mới", containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal }),
             App.createHomeSection({ id: 'hot', title: "Truyện Ngôn Tình Mới", containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal }),
-            App.createHomeSection({ id: 'new_updated', title: "Truyện Mới Cập Nhật", containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal }),
-            App.createHomeSection({ id: 'new_added', title: "Truyện Mới Thêm Gần Đây", containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal }),
-            App.createHomeSection({ id: 'full', title: "Truyện Đã Hoàn Thành", containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal }),
+            // App.createHomeSection({ id: 'new_updated', title: "Truyện Mới Cập Nhật", containsMoreItems: true, type: HomeSectionType.singleRowNormal }),
+            // App.createHomeSection({ id: 'new_added', title: "Truyện Mới Thêm Gần Đây", containsMoreItems: true, type: HomeSectionType.singleRowNormal }),
+            // App.createHomeSection({ id: 'full', title: "Truyện Đã Hoàn Thành", containsMoreItems: true, type: HomeSectionType.singleRowNormal }),
         ];
         for (const section of sections) {
             sectionCallback(section);
@@ -674,11 +674,11 @@ class Truyengihot {
             //     break;
             case "new_18":
                 param = `&text_add=&genre_add=0&format_add=0&magazine_add=0&tag_add=&tag_remove=&explicit_add=0&themes_add=&themes_remove=&country_add=&group_add=0&status_add=0&order_add=last_update&order_by_add=DESC&page=${page}`;
-                url = `${DOMAIN}`;
+                url = `${DOMAIN}danh-sach-truyen.html?listType=thumb&type_add=audult`;
                 break;
             case "hot":
                 param = `&text_add=&genre_add=0&format_add=0&magazine_add=0&tag_add=&tag_remove=&explicit_add=0&themes_add=&themes_remove=&country_add=&group_add=0&status_add=0&order_add=last_update&order_by_add=DESC&page=${page}`;
-                url = `${DOMAIN}`;
+                url = `${DOMAIN}danh-sach-truyen.html?listType=thumb&type_add=noaudult`;
                 break;
             // case "new_updated":
             //     param = `?page=${page}`;
@@ -710,7 +710,7 @@ class Truyengihot {
         });
     }
     async getSearchTags() {
-        const url = `${DOMAIN}tim-truyen-nang-cao`;
+        const url = `${DOMAIN}`;
         const $ = await this.DOMHTML(url);
         return this.parser.parseTags($);
     }
