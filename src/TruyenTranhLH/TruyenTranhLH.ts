@@ -30,11 +30,11 @@ export const isLastPage = ($: CheerioStatic): boolean => {
 }
 
 export const TruyenTranhLHInfo: SourceInfo = {
-    version: '1.0.0',
+    version: '1.0.3',
     name: 'TruyenTranhLH',
     icon: 'icon.png',
     author: 'AlanNois',
-    authorWebsite: 'https://github.com/AlanNois/',
+    authorWebsite: 'https://github.com/HiepHoang2190/',
     description: 'Extension that pulls manga from TruyenTranhLH',
     contentRating: ContentRating.MATURE,
     websiteBaseURL: DOMAIN,

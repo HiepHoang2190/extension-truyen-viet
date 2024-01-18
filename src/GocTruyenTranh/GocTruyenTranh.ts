@@ -24,7 +24,7 @@ import { Parser } from './GocTruyenTranhParser';
 const DOMAIN = 'https://goctruyentranhvui.com/';
 
 export const GocTruyenTranhInfo: SourceInfo = {
-    version: '1.0.1',
+    version: '1.0.3',
     name: 'GocTruyenTranh',
     icon: 'icon.png',
     author: 'AlanNois',

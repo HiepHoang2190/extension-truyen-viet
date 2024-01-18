@@ -4,6 +4,8 @@
     "repositoryName": "TruyenViet's Extensions (0.8)",
     "description": "TruyenViet's extensions for 0.8",
     "main": "index.js",
+    "GITHUB_REPOSITORY":"https://github.com/HiepHoang2190/extension-truyen-viet",
+    "baseURL":"https://hiephoang2190.github.io/extension-truyen-viet",
     "scripts": {
         "bundle": "npx paperback bundle",
         "serve": "npx paperback serve",
@@ -26,17 +28,14 @@
         "eslint": "^7.27.0",
         "eslint-plugin-modules-newline": "^0.0.6",
         "gh-pages": "^5.0.0",
-        "ts-node": "^10.9.1",
+        "ts-node": "^10.9.2",
         "typescript": "^4.9.5"
     },
     "dependencies": {
         "@paperback/toolchain": "^0.8.0-alpha.47",
         "@paperback/types": "^0.8.0-alpha.47",
         "cheerio": "^1.0.0-rc.12",
-        "entities": "^4.4.0",
-        "nodemon": "^2.0.22",
-        "ts-node": "^10.2.1",
-        "paperback-cli": "^2.0.0-alpha.10",
-        "paperback-extensions-common": "^5.0.0-alpha.4"
+        "entities": "^4.5.0",
+        "nodemon": "^2.0.22"
     }
 }

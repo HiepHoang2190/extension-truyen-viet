@@ -22,7 +22,7 @@ import {
 
 import { Parser } from './NhatTruyenParser';
 
-const DOMAIN = 'https://nhattruyenmax.com/';
+const DOMAIN = 'https://nhattruyento.com/';
 
 export const isLastPage = ($: CheerioStatic): boolean => {
     const current = $('ul.pagination > li.active > a').text();
@@ -36,11 +36,11 @@ export const isLastPage = ($: CheerioStatic): boolean => {
 }
 
 export const NhatTruyenInfo: SourceInfo = {
-    version: '1.0.0',
+    version: '1.0.4',
     name: 'NhatTruyen',
     icon: 'icon.png',
     author: 'AlanNois',
-    authorWebsite: 'https://github.com/AlanNois/',
+    authorWebsite: 'https://github.com/HiepHoang2190/',
     description: 'Extension that pulls manga from NhatTruyen.',
     contentRating: ContentRating.EVERYONE,
     websiteBaseURL: DOMAIN,

@@ -32,11 +32,11 @@ export const isLastPage = ($: CheerioStatic): boolean => {
 }
 
 export const DocTruyen3QInfo: SourceInfo = {
-    version: '1.0.1',
+    version: '1.0.3',
     name: 'DocTruyen3Q',
     icon: 'icon.png',
     author: 'AlanNois',
-    authorWebsite: 'https://github.com/AlanNois',
+    authorWebsite: 'https://github.com/HiepHoang2190',
     description: 'Extension that pulls manga from DocTruyen3Q',
     contentRating: ContentRating.MATURE,
     websiteBaseURL: DOMAIN,

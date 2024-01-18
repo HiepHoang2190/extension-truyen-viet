@@ -25,11 +25,11 @@ import { Parser } from './CMangaParser';
 const DOMAIN = 'https://cmangavn.com/';
 
 export const CMangaInfo: SourceInfo = {
-    version: '1.0.1',
+    version: '1.0.3',
     name: 'CManga',
     icon: 'icon.png',
     author: 'AlanNois',
-    authorWebsite: 'https://github.com/AlanNois',
+    authorWebsite: 'https://github.com/HiepHoang2190',
     description: 'Extension that pulls manga from CManga',
     contentRating: ContentRating.ADULT,
     websiteBaseURL: DOMAIN,

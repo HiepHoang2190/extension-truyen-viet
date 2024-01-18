@@ -36,11 +36,11 @@ export const isLastPage = ($: CheerioStatic): boolean => {
 }
 
 export const TuTienTruyenInfo: SourceInfo = {
-    version: '1.0.1',
+    version: '1.0.3',
     name: 'TuTienTruyen',
     icon: 'icon.png',
     author: 'AlanNois',
-    authorWebsite: 'https://github.com/AlanNois',
+    authorWebsite: 'https://github.com/HiepHoang2190',
     description: 'Extension that pulls manga from TuTienTruyen',
     contentRating: ContentRating.EVERYONE,
     websiteBaseURL: DOMAIN,

@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import {
     TagSection,
     SourceManga,
@@ -27,10 +28,10 @@ export const isLastPage = ($: CheerioStatic): boolean => {
     const currentPage = Number($('ul.pagination > li > select > option').find(':selected').text().split(' ')[1]);
 
     return currentPage >= lastPage;
-}
+};
 
 export const BlogtruyenInfo: SourceInfo = {
-    version: '1.0.1',
+    version: '1.0.3',
     name: 'Blogtruyen',
     icon: 'icon.png',
     author: 'AlanNois',
@@ -39,7 +40,7 @@ export const BlogtruyenInfo: SourceInfo = {
     websiteBaseURL: DOMAIN,
     contentRating: ContentRating.MATURE,
     intents: SourceIntents.MANGA_CHAPTERS | SourceIntents.HOMEPAGE_SECTIONS
-}
+};
 
 export class Blogtruyen implements SearchResultsProviding, MangaProviding, ChapterProviding, HomePageSectionsProviding {
     constructor(private cheerio: CheerioAPI) { }
@@ -53,7 +54,7 @@ export class Blogtruyen implements SearchResultsProviding, MangaProviding, Chapt
                     ...request.headers,
                     'Referer': DOMAIN,
                     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-                }
+                };
                 return request;
             },
             interceptResponse: async (response: Response): Promise<Response> => {
@@ -95,7 +96,7 @@ export class Blogtruyen implements SearchResultsProviding, MangaProviding, Chapt
             id: chapterId,
             mangaId: mangaId,
             pages: pages,
-        })
+        });
     }
 
     async supportsTagExclusion(): Promise<boolean> {
@@ -103,13 +104,13 @@ export class Blogtruyen implements SearchResultsProviding, MangaProviding, Chapt
     }
 
     async getSearchResults(query: SearchRequest, metadata: any): Promise<PagedResults> {
-        let page = metadata?.page ?? 1;
+        const page = metadata?.page ?? 1;
 
         const params = {
             genres: '',
             exgenres: '',
             status: '',
-        }
+        };
 
         const tags = query.includedTags?.map((tag) => tag.id) ?? [];
         const extags = query.excludedTags?.map((tag) => tag.id) ?? [];
@@ -157,18 +158,18 @@ export class Blogtruyen implements SearchResultsProviding, MangaProviding, Chapt
         return App.createPagedResults({
             results,
             metadata
-        })
+        });
 
     }
 
     async getHomePageSections(sectionCallback: (section: HomeSection) => void): Promise<void> {
-        console.log('Blogtruyen Running...')
+        console.log('Blogtruyen Running...');
         const sections: HomeSection[] = [
-            App.createHomeSection({ id: 'featured', title: "TRUYỆN ĐỀ CỬ", containsMoreItems: false, type: HomeSectionType.featured }),
-            App.createHomeSection({ id: 'hot', title: "TRUYỆN XEM NHIỀU NHẤT", containsMoreItems: true, type: HomeSectionType.singleRowNormal }),
-            App.createHomeSection({ id: 'new_updated', title: "TRUYỆN MỚI CẬP NHẬT", containsMoreItems: true, type: HomeSectionType.singleRowNormal }),
-            App.createHomeSection({ id: 'full', title: "TRUYỆN ĐÃ HOÀN THÀNH", containsMoreItems: true, type: HomeSectionType.singleRowNormal })
-        ]
+            App.createHomeSection({ id: 'featured', title: 'TRUYỆN ĐỀ CỬ', containsMoreItems: false, type: HomeSectionType.featured }),
+            App.createHomeSection({ id: 'hot', title: 'TRUYỆN XEM NHIỀU NHẤT', containsMoreItems: true, type: HomeSectionType.singleRowNormal }),
+            App.createHomeSection({ id: 'new_updated', title: 'TRUYỆN MỚI CẬP NHẬT', containsMoreItems: true, type: HomeSectionType.singleRowNormal }),
+            App.createHomeSection({ id: 'full', title: 'TRUYỆN ĐÃ HOÀN THÀNH', containsMoreItems: true, type: HomeSectionType.singleRowNormal })
+        ];
 
         for (const section of sections) {
             sectionCallback(section);
@@ -187,7 +188,7 @@ export class Blogtruyen implements SearchResultsProviding, MangaProviding, Chapt
                     url = `${DOMAIN}ajax/Category/AjaxLoadMangaByCategory?id=0&orderBy=5&p=1`;
                     break;
                 default:
-                    throw new Error(`Invalid home section ID`);
+                    throw new Error('Invalid home section ID');
             }
 
             const $ = await this.DOMHTML(url);
@@ -210,7 +211,7 @@ export class Blogtruyen implements SearchResultsProviding, MangaProviding, Chapt
     }
 
     async getViewMoreItems(homepageSectionId: string, metadata: any): Promise<PagedResults> {
-        let page: number = metadata?.page ?? 1;
+        const page: number = metadata?.page ?? 1;
         let url = '';
 
         switch (homepageSectionId) {
@@ -224,7 +225,7 @@ export class Blogtruyen implements SearchResultsProviding, MangaProviding, Chapt
                 url = `${DOMAIN}ajax/Category/AjaxLoadMangaByCategory?id=0&orderBy=5&p=${page}`;
                 break;
             default:
-                throw new Error(`Invalid home section ID`);
+                throw new Error('Invalid home section ID');
         }
 
         const $ = await this.DOMHTML(url);
@@ -234,7 +235,7 @@ export class Blogtruyen implements SearchResultsProviding, MangaProviding, Chapt
         return App.createPagedResults({
             results,
             metadata
-        })
+        });
     }
 
     async getSearchTags(): Promise<TagSection[]> {
