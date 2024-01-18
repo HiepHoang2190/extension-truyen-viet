@@ -475,7 +475,7 @@ const isLastPage = ($) => {
 };
 exports.isLastPage = isLastPage;
 exports.NetTruyenInfo = {
-    version: '1.0.1',
+    version: '1.0.2',
     name: 'NetTruyen',
     icon: 'icon.png',
     author: 'AlanNois',
