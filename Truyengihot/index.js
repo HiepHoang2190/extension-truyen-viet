@@ -531,15 +531,15 @@ class Truyengihot {
         return this.cheerio.load(response.data);
     }
     async getMangaDetails(mangaId) {
-        const $ = await this.DOMHTML(`${DOMAIN}truyen-tranh/${mangaId}`);
+        const $ = await this.DOMHTML(`${DOMAIN}/${mangaId}`);
         return this.parser.parseMangaDetails($, mangaId);
     }
     async getChapters(mangaId) {
-        const $ = await this.DOMHTML(`${DOMAIN}truyen-tranh/${mangaId}`);
+        const $ = await this.DOMHTML(`${DOMAIN}/${mangaId}`);
         return this.parser.parseChapterList($);
     }
     async getChapterDetails(mangaId, chapterId) {
-        const $ = await this.DOMHTML(`${DOMAIN}truyen-tranh/${chapterId}`);
+        const $ = await this.DOMHTML(`${DOMAIN}/${chapterId}`);
         const pages = this.parser.parseChapterDetails($);
         return App.createChapterDetails({
             id: chapterId,
