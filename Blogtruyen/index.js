@@ -1510,7 +1510,7 @@ class Blogtruyen {
         return true;
     }
     async getSearchResults(query, metadata) {
-        let page = metadata?.page ?? 1;
+        const page = metadata?.page ?? 1;
         const params = {
             genres: '',
             exgenres: '',
@@ -1561,10 +1561,10 @@ class Blogtruyen {
     async getHomePageSections(sectionCallback) {
         console.log('Blogtruyen Running...');
         const sections = [
-            App.createHomeSection({ id: 'featured', title: "TRUYỆN ĐỀ CỬ", containsMoreItems: false, type: types_1.HomeSectionType.featured }),
-            App.createHomeSection({ id: 'hot', title: "TRUYỆN XEM NHIỀU NHẤT", containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal }),
-            App.createHomeSection({ id: 'new_updated', title: "TRUYỆN MỚI CẬP NHẬT", containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal }),
-            App.createHomeSection({ id: 'full', title: "TRUYỆN ĐÃ HOÀN THÀNH", containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal })
+            App.createHomeSection({ id: 'featured', title: 'TRUYỆN ĐỀ CỬ', containsMoreItems: false, type: types_1.HomeSectionType.featured }),
+            App.createHomeSection({ id: 'hot', title: 'TRUYỆN XEM NHIỀU NHẤT', containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal }),
+            App.createHomeSection({ id: 'new_updated', title: 'TRUYỆN MỚI CẬP NHẬT', containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal }),
+            App.createHomeSection({ id: 'full', title: 'TRUYỆN ĐÃ HOÀN THÀNH', containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal })
         ];
         for (const section of sections) {
             sectionCallback(section);
@@ -1583,7 +1583,7 @@ class Blogtruyen {
                     url = `${DOMAIN}ajax/Category/AjaxLoadMangaByCategory?id=0&orderBy=5&p=1`;
                     break;
                 default:
-                    throw new Error(`Invalid home section ID`);
+                    throw new Error('Invalid home section ID');
             }
             const $ = await this.DOMHTML(url);
             switch (section.id) {
@@ -1604,7 +1604,7 @@ class Blogtruyen {
         }
     }
     async getViewMoreItems(homepageSectionId, metadata) {
-        let page = metadata?.page ?? 1;
+        const page = metadata?.page ?? 1;
         let url = '';
         switch (homepageSectionId) {
             case 'hot':
@@ -1617,7 +1617,7 @@ class Blogtruyen {
                 url = `${DOMAIN}ajax/Category/AjaxLoadMangaByCategory?id=0&orderBy=5&p=${page}`;
                 break;
             default:
-                throw new Error(`Invalid home section ID`);
+                throw new Error('Invalid home section ID');
         }
         const $ = await this.DOMHTML(url);
         const results = this.parser.parseViewMoreSection($, homepageSectionId);
