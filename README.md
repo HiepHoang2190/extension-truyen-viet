@@ -30,6 +30,7 @@
 | 6   | BlogTruyen         | https://blogtruyen.vn/         |
 | 7   | CManga             | https://cmangavn.com/          |
 | 8   | TruyenTranhLH      | https://truyentranhlh.net/     |
+| 9   | TruyenGiHot     | https://truyengihotqua.net/     |
 
 </div>
 
