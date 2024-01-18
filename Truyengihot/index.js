@@ -624,20 +624,20 @@ class Truyengihot {
                 case 'new_18':
                     url = `${DOMAIN}danh-sach-truyen.html?listType=thumb&type_add=audult`;
                     break;
-                case 'hot':
-                    url = `${DOMAIN}hot`;
-                    break;
-                case 'new_updated':
-                    url = `${DOMAIN}`;
-                    break;
-                case 'new_added':
-                    url = `${DOMAIN}tim-truyen?status=-1&sort=15`;
-                    break;
-                case 'full':
-                    url = `${DOMAIN}truyen-full`;
-                    break;
-                default:
-                    throw new Error("Invalid homepage section ID");
+                // case 'hot':
+                //     url = `${DOMAIN}hot`;
+                //     break;
+                // case 'new_updated':
+                //     url = `${DOMAIN}`;
+                //     break;
+                // case 'new_added':
+                //     url = `${DOMAIN}tim-truyen?status=-1&sort=15`;
+                //     break;
+                // case 'full':
+                //     url = `${DOMAIN}truyen-full`;
+                //     break;
+                // default:
+                //     throw new Error("Invalid homepage section ID");
             }
             const $ = await this.DOMHTML(url);
             switch (section.id) {
@@ -647,18 +647,18 @@ class Truyengihot {
                 case 'new_18':
                     section.items = this.parser.parsePopularSection($);
                     break;
-                case 'hot':
-                    section.items = this.parser.parseHotSection($);
-                    break;
-                case 'new_updated':
-                    section.items = this.parser.parseNewUpdatedSection($);
-                    break;
-                case 'new_added':
-                    section.items = this.parser.parseNewAddedSection($);
-                    break;
-                case 'full':
-                    section.items = this.parser.parseFullSection($);
-                    break;
+                // case 'hot':
+                //     section.items = this.parser.parseHotSection($);
+                //     break;
+                // case 'new_updated':
+                //     section.items = this.parser.parseNewUpdatedSection($);
+                //     break;
+                // case 'new_added':
+                //     section.items = this.parser.parseNewAddedSection($);
+                //     break;
+                // case 'full':
+                //     section.items = this.parser.parseFullSection($);
+                //     break;
             }
             sectionCallback(section);
         }
@@ -668,26 +668,26 @@ class Truyengihot {
         let param = "";
         let url = "";
         switch (homepageSectionId) {
-            case "viewest":
-                param = `?status=-1&sort=10&page=${page}`;
+            case "featured":
+                param = `&text_add=&genre_add=0&format_add=0&magazine_add=0&tag_add=&tag_remove=&explicit_add=0&themes_add=&themes_remove=&country_add=&group_add=0&status_add=0&order_add=last_update&order_by_add=DESC&page=${page}`;
                 url = `${DOMAIN}tim-truyen`;
                 break;
-            case "hot":
-                param = `?page=${page}`;
+            case "new_18":
+                param = `&text_add=&genre_add=0&format_add=0&magazine_add=0&tag_add=&tag_remove=&explicit_add=0&themes_add=&themes_remove=&country_add=&group_add=0&status_add=0&order_add=last_update&order_by_add=DESC&page=${page}`;
                 url = `${DOMAIN}hot`;
                 break;
-            case "new_updated":
-                param = `?page=${page}`;
-                url = DOMAIN;
-                break;
-            case "new_added":
-                param = `?status=-1&sort=15&page=${page}`;
-                url = `${DOMAIN}tim-truyen`;
-                break;
-            case "full":
-                param = `?page=${page}`;
-                url = `${DOMAIN}truyen-full`;
-                break;
+            // case "new_updated":
+            //     param = `?page=${page}`;
+            //     url = DOMAIN;
+            //     break;
+            // case "new_added":
+            //     param = `?status=-1&sort=15&page=${page}`;
+            //     url = `${DOMAIN}tim-truyen`;
+            //     break;
+            // case "full":
+            //     param = `?page=${page}`;
+            //     url = `${DOMAIN}truyen-full`;
+            //     break;
             default:
                 throw new Error("Requested to getViewMoreItems for a section ID which doesn't exist");
         }
