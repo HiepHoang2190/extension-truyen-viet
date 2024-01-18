@@ -475,10 +475,10 @@ const isLastPage = ($) => {
 };
 exports.isLastPage = isLastPage;
 exports.TruyengihotInfo = {
-    version: '1.0.5',
+    version: '1.0.6',
     name: 'Truyengihot',
     icon: 'icon.png',
-    author: 'AlanNois',
+    author: 'HiepHoang',
     authorWebsite: 'https://github.com/HiepHoang2190/',
     description: 'Extension that pulls manga from Truyengihot.',
     contentRating: types_1.ContentRating.EVERYONE,
@@ -607,9 +607,9 @@ class Truyengihot {
     async getHomePageSections(sectionCallback) {
         console.log('Truyengihot Running...');
         const sections = [
-            App.createHomeSection({ id: 'featured', title: "Truyện Ngôn Tình Mới", containsMoreItems: false, type: types_1.HomeSectionType.featured }),
+            // App.createHomeSection({ id: 'featured', title: "Truyện Ngôn Tình Mới", containsMoreItems: false, type: HomeSectionType.featured }),
             App.createHomeSection({ id: 'new_18', title: "Truyện 18+ Mới", containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal }),
-            App.createHomeSection({ id: 'hot', title: "Truyện Hot Nhất", containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal }),
+            App.createHomeSection({ id: 'hot', title: "Truyện Ngôn Tình Mới", containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal }),
             App.createHomeSection({ id: 'new_updated', title: "Truyện Mới Cập Nhật", containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal }),
             App.createHomeSection({ id: 'new_added', title: "Truyện Mới Thêm Gần Đây", containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal }),
             App.createHomeSection({ id: 'full', title: "Truyện Đã Hoàn Thành", containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal }),
@@ -618,15 +618,15 @@ class Truyengihot {
             sectionCallback(section);
             let url;
             switch (section.id) {
-                case 'featured':
-                    url = `${DOMAIN}danh-sach-truyen.html?listType=thumb&type_add=noaudult`;
-                    break;
+                // case 'featured':
+                //     url = `${DOMAIN}danh-sach-truyen.html?listType=thumb&type_add=noaudult`;
+                //     break;
                 case 'new_18':
                     url = `${DOMAIN}danh-sach-truyen.html?listType=thumb&type_add=audult`;
                     break;
-                // case 'hot':
-                //     url = `${DOMAIN}hot`;
-                //     break;
+                case 'hot':
+                    url = `${DOMAIN}danh-sach-truyen.html?listType=thumb&type_add=noaudult`;
+                    break;
                 // case 'new_updated':
                 //     url = `${DOMAIN}`;
                 //     break;
@@ -641,15 +641,15 @@ class Truyengihot {
             }
             const $ = await this.DOMHTML(url);
             switch (section.id) {
-                case 'featured':
-                    section.items = this.parser.parseFeaturedSection($);
-                    break;
+                // case 'featured':
+                //     section.items = this.parser.parseFeaturedSection($);
+                //     break;
                 case 'new_18':
                     section.items = this.parser.parsePopularSection($);
                     break;
-                // case 'hot':
-                //     section.items = this.parser.parseHotSection($);
-                //     break;
+                case 'hot':
+                    section.items = this.parser.parseHotSection($);
+                    break;
                 // case 'new_updated':
                 //     section.items = this.parser.parseNewUpdatedSection($);
                 //     break;
@@ -668,13 +668,17 @@ class Truyengihot {
         let param = "";
         let url = "";
         switch (homepageSectionId) {
-            case "featured":
-                param = `&text_add=&genre_add=0&format_add=0&magazine_add=0&tag_add=&tag_remove=&explicit_add=0&themes_add=&themes_remove=&country_add=&group_add=0&status_add=0&order_add=last_update&order_by_add=DESC&page=${page}`;
-                url = `${DOMAIN}tim-truyen`;
-                break;
+            // case "featured":
+            //     param = `&text_add=&genre_add=0&format_add=0&magazine_add=0&tag_add=&tag_remove=&explicit_add=0&themes_add=&themes_remove=&country_add=&group_add=0&status_add=0&order_add=last_update&order_by_add=DESC&page=${page}`;
+            //     url = `${DOMAIN}`;
+            //     break;
             case "new_18":
                 param = `&text_add=&genre_add=0&format_add=0&magazine_add=0&tag_add=&tag_remove=&explicit_add=0&themes_add=&themes_remove=&country_add=&group_add=0&status_add=0&order_add=last_update&order_by_add=DESC&page=${page}`;
-                url = `${DOMAIN}hot`;
+                url = `${DOMAIN}`;
+                break;
+            case "hot":
+                param = `&text_add=&genre_add=0&format_add=0&magazine_add=0&tag_add=&tag_remove=&explicit_add=0&themes_add=&themes_remove=&country_add=&group_add=0&status_add=0&order_add=last_update&order_by_add=DESC&page=${page}`;
+                url = `${DOMAIN}`;
                 break;
             // case "new_updated":
             //     param = `?page=${page}`;
