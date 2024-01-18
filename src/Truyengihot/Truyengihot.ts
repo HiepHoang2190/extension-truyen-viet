@@ -36,10 +36,10 @@ export const isLastPage = ($: CheerioStatic): boolean => {
 }
 
 export const TruyengihotInfo: SourceInfo = {
-    version: '1.0.4',
+    version: '1.0.8',
     name: 'Truyengihot',
     icon: 'icon.png',
-    author: 'AlanNois',
+    author: 'HiepHoang2',
     authorWebsite: 'https://github.com/HiepHoang2190/',
     description: 'Extension that pulls manga from Truyengihot.',
     contentRating: ContentRating.EVERYONE,
@@ -83,6 +83,7 @@ export class Truyengihot implements SearchResultsProviding, MangaProviding, Chap
 
     getMangaShareUrl(mangaId: string): string {
         return `${DOMAIN}/${mangaId}`;
+
     }
 
     parser = new Parser();
@@ -130,6 +131,7 @@ export class Truyengihot implements SearchResultsProviding, MangaProviding, Chap
             status: "-1",
             minchapter: "1",
             sort: "0"
+
         };
 
         const extags = query.excludedTags?.map(tag => tag.id) ?? [];
@@ -167,8 +169,8 @@ export class Truyengihot implements SearchResultsProviding, MangaProviding, Chap
         search.exgenres = exgenres.join(",");
         const paramExgenres = search.exgenres ? `&notgenres=${search.exgenres}` : '';
 
-        const url = `${DOMAIN}${query.title ? '/tim-truyen' : '/tim-truyen-nang-cao'}`;
-        const param = encodeURI(`?keyword=${query.title ?? ''}&genres=${search.genres}${paramExgenres}&gender=${search.gender}&status=${search.status}&minchapter=${search.minchapter}&sort=${search.sort}&page=${page}`);
+        const url = `${DOMAIN}${query.title ? '/danh-sach-truyen.html' : '/danh-sach-truyen.html'}`;
+        const param = encodeURI(`?text_add=${query.title ?? ''}`);
         const $ = await this.DOMHTML(url + param);
         const tiles = this.parser.parseSearchResults($);
         metadata = !isLastPage($) ? { page: page + 1 } : undefined;
@@ -182,62 +184,63 @@ export class Truyengihot implements SearchResultsProviding, MangaProviding, Chap
     async getHomePageSections(sectionCallback: (section: HomeSection) => void): Promise<void> {
         console.log('Truyengihot Running...')
         const sections: HomeSection[] = [
-            App.createHomeSection({ id: 'featured', title: "Truyện Ngôn Tình Mới", containsMoreItems: false, type: HomeSectionType.featured }),
+            // App.createHomeSection({ id: 'featured', title: "Truyện Ngôn Tình Mới", containsMoreItems: false, type: HomeSectionType.featured }),
             App.createHomeSection({ id: 'new_18', title: "Truyện 18+ Mới", containsMoreItems: true, type: HomeSectionType.singleRowNormal }),
-            App.createHomeSection({ id: 'hot', title: "Truyện Hot Nhất", containsMoreItems: true, type: HomeSectionType.singleRowNormal }),
-            App.createHomeSection({ id: 'new_updated', title: "Truyện Mới Cập Nhật", containsMoreItems: true, type: HomeSectionType.singleRowNormal }),
-            App.createHomeSection({ id: 'new_added', title: "Truyện Mới Thêm Gần Đây", containsMoreItems: true, type: HomeSectionType.singleRowNormal }),
-            App.createHomeSection({ id: 'full', title: "Truyện Đã Hoàn Thành", containsMoreItems: true, type: HomeSectionType.singleRowNormal }),
+            App.createHomeSection({ id: 'hot', title: "Truyện Ngôn Tình Mới", containsMoreItems: true, type: HomeSectionType.singleRowNormal }),
+            // App.createHomeSection({ id: 'new_updated', title: "Truyện Mới Cập Nhật", containsMoreItems: true, type: HomeSectionType.singleRowNormal }),
+            // App.createHomeSection({ id: 'new_added', title: "Truyện Mới Thêm Gần Đây", containsMoreItems: true, type: HomeSectionType.singleRowNormal }),
+            // App.createHomeSection({ id: 'full', title: "Truyện Đã Hoàn Thành", containsMoreItems: true, type: HomeSectionType.singleRowNormal }),
         ];
 
         for (const section of sections) {
             sectionCallback(section);
             let url: string;
             switch (section.id) {
-                case 'featured':
-                    url = `${DOMAIN}danh-sach-truyen.html?listType=thumb&type_add=noaudult`;
-                    break;
+                // case 'featured':
+                //     url = `${DOMAIN}danh-sach-truyen.html?listType=thumb&type_add=noaudult`;
+                //     break;
                 case 'new_18':
                     url = `${DOMAIN}danh-sach-truyen.html?listType=thumb&type_add=audult`;
                     break;
                 case 'hot':
-                    url = `${DOMAIN}hot`;
+                    url = `${DOMAIN}danh-sach-truyen.html?listType=thumb&type_add=noaudult`;
                     break;
-                case 'new_updated':
-                    url = `${DOMAIN}`;
-                    break;
-                case 'new_added':
-                    url = `${DOMAIN}tim-truyen?status=-1&sort=15`;
-                    break;
-                case 'full':
-                    url = `${DOMAIN}truyen-full`;
-                    break;
-                default:
-                    throw new Error("Invalid homepage section ID");
+                // case 'new_updated':
+                //     url = `${DOMAIN}`;
+                //     break;
+                // case 'new_added':
+                //     url = `${DOMAIN}tim-truyen?status=-1&sort=15`;
+                //     break;
+                // case 'full':
+                //     url = `${DOMAIN}truyen-full`;
+                //     break;
+                // default:
+                //     throw new Error("Invalid homepage section ID");
             }
 
             const $ = await this.DOMHTML(url);
             switch (section.id) {
-                case 'featured':
-                    section.items = this.parser.parseFeaturedSection($);
-                    break;
+                // case 'featured':
+                //     section.items = this.parser.parseFeaturedSection($);
+                //     break;
                 case 'new_18':
                     section.items = this.parser.parsePopularSection($);
                     break;
                 case 'hot':
-                    section.items = this.parser.parseHotSection($);
+                    section.items = this.parser.parsePopularSection($);
                     break;
-                case 'new_updated':
-                    section.items = this.parser.parseNewUpdatedSection($);
-                    break;
-                case 'new_added':
-                    section.items = this.parser.parseNewAddedSection($);
-                    break;
-                case 'full':
-                    section.items = this.parser.parseFullSection($);
-                    break;
+                // case 'new_updated':
+                //     section.items = this.parser.parseNewUpdatedSection($);
+                //     break;
+                // case 'new_added':
+                //     section.items = this.parser.parseNewAddedSection($);
+                //     break;
+                // case 'full':
+                //     section.items = this.parser.parseFullSection($);
+                //     break;
             }
             sectionCallback(section);
+           
         }
     }
 
@@ -247,26 +250,30 @@ export class Truyengihot implements SearchResultsProviding, MangaProviding, Chap
         let url = "";
 
         switch (homepageSectionId) {
-            case "viewest":
-                param = `?status=-1&sort=10&page=${page}`;
-                url = `${DOMAIN}tim-truyen`;
+            // case "featured":
+            //     param = `&text_add=&genre_add=0&format_add=0&magazine_add=0&tag_add=&tag_remove=&explicit_add=0&themes_add=&themes_remove=&country_add=&group_add=0&status_add=0&order_add=last_update&order_by_add=DESC&page=${page}`;
+            //     url = `${DOMAIN}`;
+            //     break;
+            case "new_18":
+                param = `&text_add=&genre_add=0&format_add=0&magazine_add=0&tag_add=&tag_remove=&explicit_add=0&themes_add=&themes_remove=&country_add=&group_add=0&status_add=0&order_add=last_update&order_by_add=DESC&page=${page}`;
+                url = `${DOMAIN}danh-sach-truyen.html?listType=thumb&type_add=audult`;
                 break;
             case "hot":
-                param = `?page=${page}`;
-                url = `${DOMAIN}hot`;
+                param = `&text_add=&genre_add=0&format_add=0&magazine_add=0&tag_add=&tag_remove=&explicit_add=0&themes_add=&themes_remove=&country_add=&group_add=0&status_add=0&order_add=last_update&order_by_add=DESC&page=${page}`;
+                url = `${DOMAIN}danh-sach-truyen.html?listType=thumb&type_add=noaudult`;
                 break;
-            case "new_updated":
-                param = `?page=${page}`;
-                url = DOMAIN;
-                break;
-            case "new_added":
-                param = `?status=-1&sort=15&page=${page}`;
-                url = `${DOMAIN}tim-truyen`;
-                break;
-            case "full":
-                param = `?page=${page}`;
-                url = `${DOMAIN}truyen-full`;
-                break;
+            // case "new_updated":
+            //     param = `?page=${page}`;
+            //     url = DOMAIN;
+            //     break;
+            // case "new_added":
+            //     param = `?status=-1&sort=15&page=${page}`;
+            //     url = `${DOMAIN}tim-truyen`;
+            //     break;
+            // case "full":
+            //     param = `?page=${page}`;
+            //     url = `${DOMAIN}truyen-full`;
+            //     break;
             default:
                 throw new Error("Requested to getViewMoreItems for a section ID which doesn't exist");
         }
@@ -290,7 +297,7 @@ export class Truyengihot implements SearchResultsProviding, MangaProviding, Chap
     }
 
     async getSearchTags(): Promise<TagSection[]> {
-        const url = `${DOMAIN}tim-truyen-nang-cao`;
+        const url = `${DOMAIN}`;
         const $ = await this.DOMHTML(url);
         return this.parser.parseTags($);
     }

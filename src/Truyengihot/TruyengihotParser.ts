@@ -205,11 +205,11 @@ export class Parser {
     parsePopularSection($: CheerioStatic): PartialSourceManga[] {
         const popularItems: PartialSourceManga[] = [];
 
-        $('div.item', 'div.row').slice(0, 20).each((_: any, manga: any) => {
-            const title = $('figure.clearfix > figcaption > h3 > a', manga).first().text();
-            const id = $('figure.clearfix > div.image > a', manga).attr('href')?.split('/').pop();
-            const image = $('figure.clearfix > div.image > a > img', manga).first().attr('data-original');
-            const subtitle = $("figure.clearfix > figcaption > ul > li.chapter:nth-of-type(1) > a", manga).last().text().trim();
+        $('.contentList li').each((_: any, manga: any) => {
+            const title = $('.info > .title > a', manga).first().text();
+            const id = $('.info > .title > a', manga).attr('href')?.split('/').pop();
+            const image = $('.thumbBox > .thumb > img', manga).first().attr('data-src');
+            const subtitle = $(".info > .author > .chapter-link > a", manga).last().text().trim();
             if (!id || !title) return;
             popularItems.push(App.createPartialSourceManga({
                 mangaId: String(id),
