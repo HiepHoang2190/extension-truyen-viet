@@ -465,8 +465,8 @@ const types_1 = require("@paperback/types");
 const DocTruyen3QParser_1 = require("./DocTruyen3QParser");
 const DOMAIN = 'https://doctruyen3qmoi.com/';
 const isLastPage = ($) => {
-    const lastPage = Number($("ul.pagination > li.page-item:not(:has(a[rel='next'])) a").last().text().trim());
-    const currentPage = Number($("ul.pagination > li.active").text().trim());
+    const lastPage = Number($('ul.pagination > li.page-item:not(:has(a[rel=\'next\'])) a').last().text().trim());
+    const currentPage = Number($('ul.pagination > li.active').text().trim());
     return currentPage >= lastPage;
 };
 exports.isLastPage = isLastPage;
@@ -481,7 +481,7 @@ exports.DocTruyen3QInfo = {
     websiteBaseURL: DOMAIN,
     sourceTags: [
         {
-            text: "Recommended",
+            text: 'Recommended',
             type: types_1.BadgeColor.BLUE
         },
     ],
@@ -540,11 +540,11 @@ class DocTruyen3Q {
         });
     }
     async getSearchResults(query, metadata) {
-        let page = metadata?.page ?? 1;
+        const page = metadata?.page ?? 1;
         const search = {
             cate: '',
-            status: "2",
-            sort: "1",
+            status: '2',
+            sort: '1',
         };
         const tags = query.includedTags?.map(tag => tag.id) ?? [];
         for (const value of tags) {
@@ -572,15 +572,14 @@ class DocTruyen3Q {
             metadata
         });
     }
-    ;
     async getHomePageSections(sectionCallback) {
         console.log('DocTruyen3Q Running...');
         const sections = [
-            App.createHomeSection({ id: 'featured', title: "TRUYỆN ĐỀ CỬ", containsMoreItems: false, type: types_1.HomeSectionType.featured, }),
-            App.createHomeSection({ id: 'viewest', title: "TRUYỆN XEM NHIỀU NHẤT", containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal, }),
-            App.createHomeSection({ id: 'hot', title: "TRUYỆN HOT NHẤT", containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal, }),
-            App.createHomeSection({ id: 'new_updated', title: "TRUYỆN MỚI CẬP NHẬT", containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal, }),
-            App.createHomeSection({ id: 'full', title: "TRUYỆN ĐÃ HOÀN THÀNH", containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal, })
+            App.createHomeSection({ id: 'featured', title: 'TRUYỆN ĐỀ CỬ', containsMoreItems: false, type: types_1.HomeSectionType.featured, }),
+            App.createHomeSection({ id: 'viewest', title: 'TRUYỆN XEM NHIỀU NHẤT', containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal, }),
+            App.createHomeSection({ id: 'hot', title: 'TRUYỆN HOT NHẤT', containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal, }),
+            App.createHomeSection({ id: 'new_updated', title: 'TRUYỆN MỚI CẬP NHẬT', containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal, }),
+            App.createHomeSection({ id: 'full', title: 'TRUYỆN ĐÃ HOÀN THÀNH', containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal, })
         ];
         for (const section of sections) {
             sectionCallback(section);
@@ -602,7 +601,7 @@ class DocTruyen3Q {
                     url = `${DOMAIN}tim-truyen?status=1&sort=2`;
                     break;
                 default:
-                    throw new Error(`Invalid home section ID`);
+                    throw new Error('Invalid home section ID');
             }
             const $ = await this.DOMHTML(url);
             switch (section.id) {
@@ -626,7 +625,7 @@ class DocTruyen3Q {
         }
     }
     async getViewMoreItems(homepageSectionId, metadata) {
-        let page = metadata?.page ?? 1;
+        const page = metadata?.page ?? 1;
         let url;
         let param;
         switch (homepageSectionId) {
@@ -647,10 +646,10 @@ class DocTruyen3Q {
                 param = `?status=1&sort=2&page=${page}`;
                 break;
             default:
-                throw new Error("Requested to getViewMoreItems for a section ID which doesn't exist");
+                throw new Error('Requested to getViewMoreItems for a section ID which doesn\'t exist');
         }
         const $ = await this.DOMHTML(`${url}${encodeURI(param)}`);
-        let manga = this.parser.parseViewMoreItems($, homepageSectionId);
+        const manga = this.parser.parseViewMoreItems($, homepageSectionId);
         metadata = (0, exports.isLastPage)($) ? undefined : { page: page + 1 };
         return App.createPagedResults({
             results: manga,

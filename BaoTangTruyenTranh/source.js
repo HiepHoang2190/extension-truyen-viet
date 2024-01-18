@@ -1441,14 +1441,14 @@ const BaoTangTruyenTranhParser_1 = require("./BaoTangTruyenTranhParser");
 const DOMAIN = 'https://baotangtruyen4.com/';
 const isLastPage = ($) => {
     const pages = [];
-    $("li", "ul.pagination").each((_, page) => {
+    $('li', 'ul.pagination').each((_, page) => {
         const p = Number($('a', page).text().trim());
         if (!isNaN(p)) {
             pages.push(p);
         }
     });
     const lastPage = Math.max(...pages);
-    const currentPage = Number($("ul.pagination > li.active > a").text().trim());
+    const currentPage = Number($('ul.pagination > li.active > a').text().trim());
     return currentPage >= lastPage;
 };
 exports.isLastPage = isLastPage;
@@ -1467,7 +1467,7 @@ exports.BaoTangTruyenTranhInfo = {
             type: types_1.BadgeColor.GREEN,
         },
         {
-            text: "Recommended",
+            text: 'Recommended',
             type: types_1.BadgeColor.BLUE,
         }
     ],
@@ -1539,9 +1539,9 @@ class BaoTangTruyenTranh {
         const page = metadata?.page ?? 1;
         const tags = query.includedTags?.map((tag) => tag.id) ?? [];
         const search = {
-            cate: "",
-            status: "-1",
-            sort: "0",
+            cate: '',
+            status: '-1',
+            sort: '0',
         };
         tags.forEach((value) => {
             const [key, val] = value.split('.');
@@ -1590,7 +1590,7 @@ class BaoTangTruyenTranh {
                     url = `${DOMAIN}home?page=1&typegroup=1`;
                     break;
                 default:
-                    throw new Error("Invalid home section ID");
+                    throw new Error('Invalid home section ID');
             }
             const $ = await this.DOMHTML(url);
             switch (section.id) {
@@ -1608,7 +1608,7 @@ class BaoTangTruyenTranh {
         }
     }
     async getViewMoreItems(homepageSectionId, metadata) {
-        let page = metadata?.page ?? 1;
+        const page = metadata?.page ?? 1;
         let url = '';
         // let select = 1;
         switch (homepageSectionId) {
@@ -1711,7 +1711,7 @@ class BaoTangTruyenTranh {
             const $ = await this.DOMHTML(url);
             const updatedManga = $('.items-slide .item').toArray().map(element => {
                 const id = $('a', element).attr('href')?.split('/').slice(-2).join('/');
-                const time = $("figure.clearfix > figcaption > ul > li.chapter:nth-of-type(1) > i", element).last().text().trim();
+                const time = $('figure.clearfix > figcaption > ul > li.chapter:nth-of-type(1) > i', element).last().text().trim();
                 return {
                     id: id,
                     time: time,

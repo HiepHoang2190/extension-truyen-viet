@@ -1436,6 +1436,7 @@ Object.defineProperty(exports, "decodeXMLStrict", { enumerable: true, get: funct
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Blogtruyen = exports.BlogtruyenInfo = exports.isLastPage = void 0;
+/* eslint-disable max-len */
 const types_1 = require("@paperback/types");
 const BlogtruyenParser_1 = require("./BlogtruyenParser");
 const DOMAIN = 'https://blogtruyen.vn/';

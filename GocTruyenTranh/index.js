@@ -1450,7 +1450,7 @@ exports.GocTruyenTranhInfo = {
     contentRating: types_1.ContentRating.EVERYONE,
     sourceTags: [
         {
-            text: "Recommended",
+            text: 'Recommended',
             type: types_1.BadgeColor.BLUE
         },
     ],
@@ -1518,7 +1518,7 @@ class GocTruyenTranh {
         });
     }
     async getSearchResults(query, metadata) {
-        let page = metadata?.page ?? 0;
+        const page = metadata?.page ?? 0;
         const tags = query.includedTags?.map(tag => tag.id) ?? [];
         const url = query.title ? encodeURI(`${DOMAIN}api/comic/search?name=${query.title}`) : `${DOMAIN}api/comic/search/category?p=${page}&value=${tags[0]}`;
         const json = await this.callAPI(url);
@@ -1550,9 +1550,9 @@ class GocTruyenTranh {
                     url = `${DOMAIN}api/comic/search/recent?p=0`;
                     break;
                 default:
-                    throw new Error(`Invalid home section ID`);
+                    throw new Error('Invalid home section ID');
             }
-            let json = await this.callAPI(url);
+            const json = await this.callAPI(url);
             switch (section.id) {
                 case 'hot':
                     section.items = this.parser.parseViewMoreItems(json).slice(0, 10);
@@ -1568,7 +1568,7 @@ class GocTruyenTranh {
         }
     }
     async getViewMoreItems(homepageSectionId, metadata) {
-        let page = metadata?.page ?? 0;
+        const page = metadata?.page ?? 0;
         let url;
         switch (homepageSectionId) {
             case 'hot':
@@ -1581,7 +1581,7 @@ class GocTruyenTranh {
                 url = `${DOMAIN}api/comic/search/recent?p=${page}`;
                 break;
             default:
-                throw new Error("Requested to getViewMoreItems for a section ID which doesn't exist");
+                throw new Error('Requested to getViewMoreItems for a section ID which doesn\'t exist');
         }
         const json = await this.callAPI(url);
         const tiles = this.parser.parseViewMoreItems(json);

@@ -1436,6 +1436,7 @@ Object.defineProperty(exports, "decodeXMLStrict", { enumerable: true, get: funct
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TruyenTranhLH = exports.TruyenTranhLHInfo = exports.isLastPage = void 0;
+/* eslint-disable max-len */
 const types_1 = require("@paperback/types");
 const TruyenTranhLHParser_1 = require("./TruyenTranhLHParser");
 const DOMAIN = 'https://truyenlh.com/';
@@ -1518,12 +1519,12 @@ class TruyenTranhLH {
         return true;
     }
     async getSearchResults(query, metadata) {
-        let page = metadata?.page ?? 1;
+        const page = metadata?.page ?? 1;
         const search = {
-            status: "",
-            sort: "update",
-            genres: "",
-            exgenres: ""
+            status: '',
+            sort: 'update',
+            genres: '',
+            exgenres: ''
         };
         const extags = query.excludedTags?.map(tag => tag.id) ?? [];
         const exgenres = [];
@@ -1550,8 +1551,8 @@ class TruyenTranhLH {
                 }
             }
         }
-        search.genres = genres.join(",");
-        search.exgenres = exgenres.join(",");
+        search.genres = genres.join(',');
+        search.exgenres = exgenres.join(',');
         const url = `${DOMAIN}tim-kiem`;
         const param = encodeURI(`?q=${query.title ?? ''}&status=${search.status ?? ''}&sort=${search.sort}&accept_genres=${search.genres}&reject_genres=${search.exgenres}&page=${page}`);
         const $ = await this.DOMHTML(url + param);
@@ -1565,9 +1566,9 @@ class TruyenTranhLH {
     async getHomePageSections(sectionCallback) {
         console.log('TruyenTranhLH Running...');
         const sections = [
-            App.createHomeSection({ id: 'hot', title: "Truyện hot trong ngày", containsMoreItems: false, type: types_1.HomeSectionType.featured }),
-            App.createHomeSection({ id: 'new_updated', title: "Truyện mới cập nhật", containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal }),
-            App.createHomeSection({ id: 'new_added', title: "Truyện mới nhất", containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal })
+            App.createHomeSection({ id: 'hot', title: 'Truyện hot trong ngày', containsMoreItems: false, type: types_1.HomeSectionType.featured }),
+            App.createHomeSection({ id: 'new_updated', title: 'Truyện mới cập nhật', containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal }),
+            App.createHomeSection({ id: 'new_added', title: 'Truyện mới nhất', containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal })
         ];
         for (const section of sections) {
             sectionCallback(section);
@@ -1583,7 +1584,7 @@ class TruyenTranhLH {
                     url = `${DOMAIN}tim-kiem?sort=new`;
                     break;
                 default:
-                    throw new Error("Invalid homepage section ID");
+                    throw new Error('Invalid homepage section ID');
             }
             const $ = await this.DOMHTML(url);
             switch (section.id) {
@@ -1601,17 +1602,17 @@ class TruyenTranhLH {
         }
     }
     async getViewMoreItems(homepageSectionId, metadata) {
-        let page = metadata?.page ?? 1;
+        const page = metadata?.page ?? 1;
         let url;
         switch (homepageSectionId) {
-            case "new_updated":
+            case 'new_updated':
                 url = `${DOMAIN}tim-kiem?sort=update&page=${page}`;
                 break;
-            case "new_added":
+            case 'new_added':
                 url = `${DOMAIN}tim-kiem?sort=new&page=${page}`;
                 break;
             default:
-                throw new Error("Requested to getViewMoreItems for a section ID which doesn't exist");
+                throw new Error('Requested to getViewMoreItems for a section ID which doesn\'t exist');
         }
         const $ = await this.DOMHTML(url);
         const manga = this.parser.parseSearchResults($);

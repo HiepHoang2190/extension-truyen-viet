@@ -461,6 +461,7 @@ __exportStar(require("./compat/DyamicUI"), exports);
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NetTruyen = exports.NetTruyenInfo = exports.isLastPage = void 0;
+/* eslint-disable max-len */
 const types_1 = require("@paperback/types");
 const NetTruyenParser_1 = require("./NetTruyenParser");
 const DOMAIN = 'https://www.nettruyenbing.com/';
@@ -551,14 +552,14 @@ class NetTruyen {
         return true;
     }
     async getSearchResults(query, metadata) {
-        let page = metadata?.page ?? 1;
+        const page = metadata?.page ?? 1;
         const search = {
             genres: '',
             exgenres: '',
-            gender: "-1",
-            status: "-1",
-            minchapter: "1",
-            sort: "0"
+            gender: '-1',
+            status: '-1',
+            minchapter: '1',
+            sort: '0'
         };
         const extags = query.excludedTags?.map(tag => tag.id) ?? [];
         const exgenres = [];
@@ -574,7 +575,7 @@ class NetTruyen {
                 genres.push(value);
             }
             else {
-                const [key, val] = value.split(".");
+                const [key, val] = value.split('.');
                 switch (key) {
                     case 'minchapter':
                         search.minchapter = String(val);
@@ -591,8 +592,8 @@ class NetTruyen {
                 }
             }
         }
-        search.genres = genres.join(",");
-        search.exgenres = exgenres.join(",");
+        search.genres = genres.join(',');
+        search.exgenres = exgenres.join(',');
         const paramExgenres = search.exgenres ? `&notgenres=${search.exgenres}` : '';
         const url = `${DOMAIN}${query.title ? '/tim-truyen' : '/tim-truyen-nang-cao'}`;
         const param = encodeURI(`?keyword=${query.title ?? ''}&genres=${search.genres}${paramExgenres}&gender=${search.gender}&status=${search.status}&minchapter=${search.minchapter}&sort=${search.sort}&page=${page}`);
@@ -607,12 +608,12 @@ class NetTruyen {
     async getHomePageSections(sectionCallback) {
         console.log('NetTruyen Running...');
         const sections = [
-            App.createHomeSection({ id: 'featured', title: "Truyện Đề Cử", containsMoreItems: false, type: types_1.HomeSectionType.featured }),
-            App.createHomeSection({ id: 'viewest', title: "Truyện Xem Nhiều Nhất", containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal }),
-            App.createHomeSection({ id: 'hot', title: "Truyện Hot Nhất", containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal }),
-            App.createHomeSection({ id: 'new_updated', title: "Truyện Mới Cập Nhật", containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal }),
-            App.createHomeSection({ id: 'new_added', title: "Truyện Mới Thêm Gần Đây", containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal }),
-            App.createHomeSection({ id: 'full', title: "Truyện Đã Hoàn Thành", containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal }),
+            App.createHomeSection({ id: 'featured', title: 'Truyện Đề Cử', containsMoreItems: false, type: types_1.HomeSectionType.featured }),
+            App.createHomeSection({ id: 'viewest', title: 'Truyện Xem Nhiều Nhất', containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal }),
+            App.createHomeSection({ id: 'hot', title: 'Truyện Hot Nhất', containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal }),
+            App.createHomeSection({ id: 'new_updated', title: 'Truyện Mới Cập Nhật', containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal }),
+            App.createHomeSection({ id: 'new_added', title: 'Truyện Mới Thêm Gần Đây', containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal }),
+            App.createHomeSection({ id: 'full', title: 'Truyện Đã Hoàn Thành', containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal }),
         ];
         for (const section of sections) {
             sectionCallback(section);
@@ -637,7 +638,7 @@ class NetTruyen {
                     url = `${DOMAIN}truyen-full`;
                     break;
                 default:
-                    throw new Error("Invalid homepage section ID");
+                    throw new Error('Invalid homepage section ID');
             }
             const $ = await this.DOMHTML(url);
             switch (section.id) {
@@ -664,32 +665,32 @@ class NetTruyen {
         }
     }
     async getViewMoreItems(homepageSectionId, metadata) {
-        let page = metadata?.page ?? 1;
-        let param = "";
-        let url = "";
+        const page = metadata?.page ?? 1;
+        let param = '';
+        let url = '';
         switch (homepageSectionId) {
-            case "viewest":
+            case 'viewest':
                 param = `?status=-1&sort=10&page=${page}`;
                 url = `${DOMAIN}tim-truyen`;
                 break;
-            case "hot":
+            case 'hot':
                 param = `?page=${page}`;
                 url = `${DOMAIN}hot`;
                 break;
-            case "new_updated":
+            case 'new_updated':
                 param = `?page=${page}`;
                 url = DOMAIN;
                 break;
-            case "new_added":
+            case 'new_added':
                 param = `?status=-1&sort=15&page=${page}`;
                 url = `${DOMAIN}tim-truyen`;
                 break;
-            case "full":
+            case 'full':
                 param = `?page=${page}`;
                 url = `${DOMAIN}truyen-full`;
                 break;
             default:
-                throw new Error("Requested to getViewMoreItems for a section ID which doesn't exist");
+                throw new Error('Requested to getViewMoreItems for a section ID which doesn\'t exist');
         }
         const request = App.createRequest({
             url,
@@ -720,11 +721,11 @@ class NetTruyen {
             // })
             // const response = await this.requestManager.schedule(request, 1)
             // const $ = this.cheerio.load(response.data);
-            let url = `${DOMAIN}?page=${i}`;
+            const url = `${DOMAIN}?page=${i}`;
             const $ = await this.DOMHTML(url);
             const updateManga = $('div.item', 'div.row').toArray().map(manga => {
                 const id = $('figure.clearfix > div.image > a', manga).attr('href')?.split('/').pop();
-                const time = $("figure.clearfix > figcaption > ul > li.chapter:nth-of-type(1) > i", manga).last().text().trim();
+                const time = $('figure.clearfix > figcaption > ul > li.chapter:nth-of-type(1) > i', manga).last().text().trim();
                 return {
                     id: id,
                     time: time
