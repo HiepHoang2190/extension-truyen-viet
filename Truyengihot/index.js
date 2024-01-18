@@ -460,10 +460,10 @@ __exportStar(require("./compat/DyamicUI"), exports);
 },{"./base/index":7,"./compat/DyamicUI":16,"./generated/_exports":60}],62:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TruyenGiHot = exports.TruyenGiHotInfo = exports.isLastPage = void 0;
+exports.Truyengihot = exports.TruyengihotInfo = exports.isLastPage = void 0;
 const types_1 = require("@paperback/types");
 const TruyengihotParser_1 = require("./TruyengihotParser");
-const DOMAIN = 'https://truyengihotqua.net/';
+const DOMAIN = 'https://Truyengihotqua.net/';
 const isLastPage = ($) => {
     const current = $('ul.pagination > li.active > a').text();
     let total = $('ul.pagination > li.PagerSSCCells:last-child').text();
@@ -474,13 +474,13 @@ const isLastPage = ($) => {
     return true;
 };
 exports.isLastPage = isLastPage;
-exports.TruyenGiHotInfo = {
+exports.TruyengihotInfo = {
     version: '1.0.4',
-    name: 'TruyenGiHot',
+    name: 'Truyengihot',
     icon: 'icon.png',
     author: 'AlanNois',
     authorWebsite: 'https://github.com/HiepHoang2190/',
-    description: 'Extension that pulls manga from TruyenGiHot.',
+    description: 'Extension that pulls manga from Truyengihot.',
     contentRating: types_1.ContentRating.EVERYONE,
     websiteBaseURL: DOMAIN,
     sourceTags: [
@@ -495,7 +495,7 @@ exports.TruyenGiHotInfo = {
     ],
     intents: types_1.SourceIntents.MANGA_CHAPTERS | types_1.SourceIntents.HOMEPAGE_SECTIONS
 };
-class TruyenGiHot {
+class Truyengihot {
     constructor(cheerio) {
         this.cheerio = cheerio;
         this.requestManager = App.createRequestManager({
@@ -605,7 +605,7 @@ class TruyenGiHot {
         });
     }
     async getHomePageSections(sectionCallback) {
-        console.log('TruyenGiHot Running...');
+        console.log('Truyengihot Running...');
         const sections = [
             App.createHomeSection({ id: 'featured', title: "Truyện Ngôn Tình Mới", containsMoreItems: false, type: types_1.HomeSectionType.featured }),
             App.createHomeSection({ id: 'new_18', title: "Truyện 18+ Mới", containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal }),
@@ -736,7 +736,7 @@ class TruyenGiHot {
         mangaUpdatesFoundCallback(App.createMangaUpdates(returnObject));
     }
 }
-exports.TruyenGiHot = TruyenGiHot;
+exports.Truyengihot = Truyengihot;
 
 },{"./TruyengihotParser":63,"@paperback/types":61}],63:[function(require,module,exports){
 "use strict";
