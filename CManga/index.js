@@ -1436,7 +1436,6 @@ Object.defineProperty(exports, "decodeXMLStrict", { enumerable: true, get: funct
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CManga = exports.CMangaInfo = void 0;
-/* eslint-disable max-len */
 const types_1 = require("@paperback/types");
 const CMangaParser_1 = require("./CMangaParser");
 const DOMAIN = 'https://cmangavn.com/';
@@ -1518,7 +1517,7 @@ class CManga {
         });
     }
     async getSearchResults(query, metadata) {
-        const page = metadata?.page ?? 1;
+        let page = metadata?.page ?? 1;
         // const tags = query.includedTags?.map(tag => tag.id) ?? [];
         // const search = {
         //     status: "all",
@@ -1568,7 +1567,7 @@ class CManga {
     async getHomePageSections(sectionCallback) {
         console.log('CManga Running...');
         const sections = [
-            App.createHomeSection({ id: 'new_updated', title: 'TRUYỆN MỚI CẬP NHẬT', containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal, }),
+            App.createHomeSection({ id: 'new_updated', title: "TRUYỆN MỚI CẬP NHẬT", containsMoreItems: true, type: types_1.HomeSectionType.singleRowNormal, }),
             // App.createHomeSection({ id: 'new_added', title: "VIP TRUYỆN SIÊU HAY", containsMoreItems: true, type: HomeSectionType.singleRowNormal, })
         ];
         for (const section of sections) {
@@ -1582,7 +1581,7 @@ class CManga {
                 //     url = `${DOMAIN}api/list_item?page=1&limit=20&sort=new&type=all&tag=Truy%E1%BB%87n%20si%C3%AAu%20hay&child=off&status=all&num_chapter=0`;
                 //     break;
                 default:
-                    throw new Error('Invalid home section ID');
+                    throw new Error(`Invalid home section ID`);
             }
             const json = JSON.parse(await this.getAPI(url));
             switch (section.id) {
@@ -1597,7 +1596,7 @@ class CManga {
         }
     }
     async getViewMoreItems(homepageSectionId, metadata) {
-        const page = metadata?.page ?? 1;
+        let page = metadata?.page ?? 1;
         let url = '';
         switch (homepageSectionId) {
             case 'new_updated':
@@ -1607,7 +1606,7 @@ class CManga {
             //     url = `${DOMAIN}api/list_item?page=${page}&limit=40&sort=new&type=all&tag=Truy%E1%BB%87n%20si%C3%AAu%20hay&child=off&status=all&num_chapter=0`
             //     break;
             default:
-                throw new Error('Requested to getViewMoreItems for a section ID which doesn\'t exist');
+                throw new Error(`Requested to getViewMoreItems for a section ID which doesn't exist`);
         }
         const json = JSON.parse(await this.getAPI(url));
         const manga = this.parser.parseViewMore(json['data'], DOMAIN);
@@ -1627,7 +1626,7 @@ class CManga {
         const updatedManga = [];
         const pages = 10;
         for (let page = 1; page <= pages; page++) {
-            const url = `${DOMAIN}api/list_item?page=${page}&limit=40&sort=new&type=all&tag=&child_protect=off&status=all&num_chapter=0`;
+            let url = `${DOMAIN}api/list_item?page=${page}&limit=40&sort=new&type=all&tag=&child_protect=off&status=all&num_chapter=0`;
             const json = JSON.parse(await this.getAPI(url));
             const updateManga = Object.keys(json).map(key => {
                 const id = `${json[key].url}-${json[key].id_book}`;
