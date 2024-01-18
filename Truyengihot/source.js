@@ -475,10 +475,10 @@ const isLastPage = ($) => {
 };
 exports.isLastPage = isLastPage;
 exports.TruyengihotInfo = {
-    version: '1.0.7',
+    version: '1.0.8',
     name: 'Truyengihot',
     icon: 'icon.png',
-    author: 'HiepHoang1',
+    author: 'HiepHoang2',
     authorWebsite: 'https://github.com/HiepHoang2190/',
     description: 'Extension that pulls manga from Truyengihot.',
     contentRating: types_1.ContentRating.EVERYONE,
@@ -595,7 +595,7 @@ class Truyengihot {
         search.exgenres = exgenres.join(",");
         const paramExgenres = search.exgenres ? `&notgenres=${search.exgenres}` : '';
         const url = `${DOMAIN}${query.title ? '/danh-sach-truyen.html' : '/danh-sach-truyen.html'}`;
-        const param = encodeURI(`?text_add=${query.title ?? ''}&genres=${search.genres}${paramExgenres}&gender=${search.gender}&status=${search.status}&minchapter=${search.minchapter}&sort=${search.sort}&page=${page}`);
+        const param = encodeURI(`?text_add=${query.title ?? ''}`);
         const $ = await this.DOMHTML(url + param);
         const tiles = this.parser.parseSearchResults($);
         metadata = !(0, exports.isLastPage)($) ? { page: page + 1 } : undefined;
@@ -648,7 +648,7 @@ class Truyengihot {
                     section.items = this.parser.parsePopularSection($);
                     break;
                 case 'hot':
-                    section.items = this.parser.parseHotSection($);
+                    section.items = this.parser.parsePopularSection($);
                     break;
                 // case 'new_updated':
                 //     section.items = this.parser.parseNewUpdatedSection($);
@@ -933,11 +933,11 @@ class Parser {
     }
     parsePopularSection($) {
         const popularItems = [];
-        $('div.item', 'div.row').slice(0, 20).each((_, manga) => {
-            const title = $('figure.clearfix > figcaption > h3 > a', manga).first().text();
-            const id = $('figure.clearfix > div.image > a', manga).attr('href')?.split('/').pop();
-            const image = $('figure.clearfix > div.image > a > img', manga).first().attr('data-original');
-            const subtitle = $("figure.clearfix > figcaption > ul > li.chapter:nth-of-type(1) > a", manga).last().text().trim();
+        $('.contentList li').each((_, manga) => {
+            const title = $('.info > .title > a', manga).first().text();
+            const id = $('.info > .title > a', manga).attr('href')?.split('/').pop();
+            const image = $('.thumbBox > .thumb > img', manga).first().attr('data-src');
+            const subtitle = $(".info > .author > .chapter-link > a", manga).last().text().trim();
             if (!id || !title)
                 return;
             popularItems.push(App.createPartialSourceManga({
