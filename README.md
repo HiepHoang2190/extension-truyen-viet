@@ -23,7 +23,7 @@
 | --- | ------------------ | ------------------------------ |
 | 0   | NetTruyen          | https://www.nettruyenclub.com/     |
 | 1   | NhatTruyen         | https://nhattruyento.com/     |
-| 2   | BaoTangTruyenTranh | https://baotangtruyen4.com/    |
+| 2   | BaoTangTruyenTranh | https://baotangtruyen6.com/    |
 | 3   | TuTienTruyen       | https://tutientruyen.xyz/      |
 | 4   | GocTruyenTranh     | https://goctruyentranhvui.com/ |
 | 5   | DocTruyen3Q        | https://doctruyen3qmoi.com/    |
