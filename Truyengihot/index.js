@@ -463,7 +463,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Truyengihot = exports.TruyengihotInfo = exports.isLastPage = void 0;
 const types_1 = require("@paperback/types");
 const TruyengihotParser_1 = require("./TruyengihotParser");
-const DOMAIN = 'https://Truyengihotqua.net/';
+const DOMAIN = 'https://truyengihotqua.net/';
 const isLastPage = ($) => {
     const current = $('ul.pagination > li.active > a').text();
     let total = $('ul.pagination > li.PagerSSCCells:last-child').text();
@@ -475,10 +475,10 @@ const isLastPage = ($) => {
 };
 exports.isLastPage = isLastPage;
 exports.TruyengihotInfo = {
-    version: '1.0.10',
+    version: '1.0.11',
     name: 'Truyengihot',
     icon: 'icon.png',
-    author: 'HiepHoang4',
+    author: 'HiepHoang5',
     authorWebsite: 'https://github.com/HiepHoang2190/',
     description: 'Extension that pulls manga from Truyengihot.',
     contentRating: types_1.ContentRating.EVERYONE,
