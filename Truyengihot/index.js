@@ -465,20 +465,21 @@ const types_1 = require("@paperback/types");
 const TruyengihotParser_1 = require("./TruyengihotParser");
 const DOMAIN = 'https://truyengihotqua.net/';
 const isLastPage = ($) => {
-    const current = $('ul.pagination > li.active > a').text();
-    let total = $('ul.pagination > li.PagerSSCCells:last-child').text();
-    if (current) {
-        total = total ?? '';
-        return (+total) === (+current); //+ => convert value to number
-    }
-    return true;
+    const current = $('ul.pagination > li > a.current').text();
+    const lastPage = $('ul.pagination > li.page-next > a').attr('href')?.split('=').pop();
+    return (+current) === (+String(lastPage));
+    // if (current) {
+    //     total = total ?? '';
+    //     return (+total) === (+current); //+ => convert value to number
+    // }
+    // return true;
 };
 exports.isLastPage = isLastPage;
 exports.TruyengihotInfo = {
-    version: '1.0.11',
+    version: '1.0.12',
     name: 'Truyengihot',
     icon: 'icon.png',
-    author: 'HiepHoang5',
+    author: 'HiepHoang6',
     authorWebsite: 'https://github.com/HiepHoang2190/',
     description: 'Extension that pulls manga from Truyengihot.',
     contentRating: types_1.ContentRating.EVERYONE,
@@ -553,12 +554,12 @@ class Truyengihot {
     async getSearchResults(query, metadata) {
         let page = metadata?.page ?? 1;
         const search = {
-            genres: '',
-            exgenres: '',
-            gender: "-1",
-            status: "-1",
-            minchapter: "1",
-            sort: "0"
+        // genres: '',
+        // exgenres: '',
+        // gender: "-1",
+        // status: "-1",
+        // minchapter: "1",
+        // sort: "0"
         };
         const extags = query.excludedTags?.map(tag => tag.id) ?? [];
         const exgenres = [];
@@ -573,27 +574,24 @@ class Truyengihot {
             if (value.indexOf('.') === -1) {
                 genres.push(value);
             }
-            else {
-                const [key, val] = value.split(".");
-                switch (key) {
-                    case 'minchapter':
-                        search.minchapter = String(val);
-                        break;
-                    case 'gender':
-                        search.gender = String(val);
-                        break;
-                    case 'sort':
-                        search.sort = String(val);
-                        break;
-                    case 'status':
-                        search.status = String(val);
-                        break;
-                }
-            }
+            //  else {
+            //     const [key, val] = value.split(".");
+            //     switch (key) {
+            //         case 'gender':
+            //             search.gender = String(val);
+            //             break;
+            //         case 'sort':
+            //             search.sort = String(val);
+            //             break;
+            //         case 'status':
+            //             search.status = String(val);
+            //             break;
+            //     }
+            // }
         }
-        search.genres = genres.join(",");
-        search.exgenres = exgenres.join(",");
-        const paramExgenres = search.exgenres ? `&notgenres=${search.exgenres}` : '';
+        // search.genres = genres.join(",");
+        // search.exgenres = exgenres.join(",");
+        // const paramExgenres = search.exgenres ? `&notgenres=${search.exgenres}` : '';
         const url = `${DOMAIN}${query.title ? '/danh-sach-truyen.html' : '/danh-sach-truyen.html'}`;
         const param = encodeURI(`?text_add=${query.title ?? ''}`);
         const $ = await this.DOMHTML(url + param);
@@ -708,11 +706,6 @@ class Truyengihot {
             results: manga,
             metadata
         });
-    }
-    async getSearchTags() {
-        const url = `${DOMAIN}`;
-        const $ = await this.DOMHTML(url);
-        return this.parser.parseTags($);
     }
 }
 exports.Truyengihot = Truyengihot;
@@ -909,10 +902,14 @@ class Parser {
     parsePopularSection($) {
         const popularItems = [];
         $('.contentList li').each((_, manga) => {
-            const title = $('.info > .title > a', manga).first().text();
-            const id = $('.info > .title > a', manga).attr('href')?.split('/').pop();
-            const image = $('.thumbBox > .thumb > img', manga).first().attr('data-src');
-            const subtitle = $('.info > .author > .chapter-link > a', manga).last().text().trim();
+            // const title = $('.info > .title > a', manga).first().text();
+            // const id = $('.info > .title > a', manga).attr('href')?.split('/').pop();
+            // const image = $('.thumbBox > .thumb > img', manga).first().attr('data-src');
+            // const subtitle = $('.info > .author > .chapter-link > a', manga).last().text().trim();
+            const title = 'VỤ BÊ BỐI TRÁ HÌNH';
+            const id = 'truyen-vu-be-boi-tra-hinh.html';
+            const image = '//cdn.cdnimgtgh.com/covers/0_ea4c9e80-7d41-44c1-989f-fd868e46a405.jpg';
+            const subtitle = 'C 23.2';
             if (!id || !title)
                 return;
             popularItems.push(App.createPartialSourceManga({
