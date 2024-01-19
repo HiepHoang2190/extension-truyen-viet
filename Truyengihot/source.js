@@ -778,24 +778,25 @@ class Parser {
     }
     parseMangaDetails($, mangaId) {
         const tags = [];
-        $('li.kind > p.col-xs-8 > a').each((_, obj) => {
+        $('.cover-spec > .cover-artist.tag_area > a.manga-tags').each((_, obj) => {
             const label = $(obj).text();
             const id = $(obj).attr('href')?.split('/')[4] ?? label;
             tags.push(App.createTag({ label, id }));
         });
-        const titles = $('h1.title-detail').text().trim();
-        const author = $('ul.list-info > li.author > p.col-xs-8').text();
-        const artist = $('ul.list-info > li.author > p.col-xs-8').text();
-        const image = 'https:' + $('div.col-image > img').attr('src');
-        const desc = $('div.detail-content > p').text();
-        const status = $('ul.list-info > li.status > p.col-xs-8').text();
+        const titles = $('h2.cover-title').text().trim();
+        const author = $('.cover-wrapper > .cover-spec > .cover-artist').first().text();
+        // const artist = $('ul.list-info > li.author > p.col-xs-8').text();
+        const image = 'https:' + $('.cover-wrapper > .cover-image > img').attr('data-src');
+        const desc = $('.description .textArea').text();
+        // const status = $('ul.list-info > li.status > p.col-xs-8').text();
+        const status = 'going';
         const rating = parseFloat($('span[itemprop="ratingValue"]').text());
         return App.createSourceManga({
             id: mangaId,
             mangaInfo: App.createMangaInfo({
                 titles: [titles],
                 author,
-                artist,
+                // artist,
                 image,
                 desc,
                 status,
@@ -806,12 +807,12 @@ class Parser {
     }
     parseChapterList($) {
         const chapters = [];
-        $('div.list-chapter > nav > ul > li.row:not(.heading)').each((_, obj) => {
-            const id = String($('div.chapter a', obj).attr('href')).split('/').slice(4).join('/');
-            const time = $('div.col-xs-4', obj).text();
-            const group = $('div.col-xs-3', obj).text();
-            let name = $('div.chapter a', obj).text();
-            const chapNum = $('div.chapter a', obj).text().split(' ')[1];
+        $('ul.episode-list > li').each((_, obj) => {
+            const id = String($('a.item', obj).attr('href')).split('/').slice(4).join('/');
+            const time = $('.itemCols .info .date', obj).text();
+            const group = $('.itemCols .info .views', obj).text();
+            let name = $('.itemCols .info .no', obj).text();
+            const chapNum = $('.itemCols .info .no', obj).text().split(' ')[1];
             name = name.includes(':') ? String(name.split(':')[1]).trim() : '';
             const timeFinal = this.convertTime(time);
             chapters.push(App.createChapter({
@@ -830,22 +831,22 @@ class Parser {
     }
     parseChapterDetails($) {
         const pages = [];
-        $('div.reading-detail > div.page-chapter > img').each((_, obj) => {
-            if (!obj.attribs['data-original'])
+        $('.contentChapter > img').each((_, obj) => {
+            if (!obj.attribs['data-src'])
                 return;
-            const link = obj.attribs['data-original'];
+            const link = obj.attribs['data-src'];
             pages.push(link.indexOf('https') === -1 ? 'https:' + link : link);
         });
         return pages;
     }
     parseSearchResults($) {
         const tiles = [];
-        $('div.item', 'div.row').each((_, manga) => {
-            const title = $('figure.clearfix > figcaption > h3 > a', manga).first().text();
-            const id = $('figure.clearfix > div.image > a', manga).attr('href')?.split('/').pop();
-            let image = $('figure.clearfix > div.image > a > img', manga).first().attr('data-original');
+        $('.widgetWrapper .contentWidget ul.contentList li').each((_, manga) => {
+            const title = $('.info .title a', manga).first().text();
+            const id = $('a', manga).attr('href')?.split('/').pop();
+            let image = $('.thumbBox .thumb img', manga).first().attr('data-src');
             image = !image ? "https://i.imgur.com/GYUxEX8.png" : 'https:' + image;
-            const subtitle = $("figure.clearfix > figcaption > ul > li.chapter:nth-of-type(1) > a", manga).last().text().trim();
+            const subtitle = $('.author .chapter-link a', manga).last().text().trim();
             if (!id || !title)
                 return;
             tiles.push(App.createPartialSourceManga({
@@ -937,7 +938,7 @@ class Parser {
             const title = $('.info > .title > a', manga).first().text();
             const id = $('.info > .title > a', manga).attr('href')?.split('/').pop();
             const image = $('.thumbBox > .thumb > img', manga).first().attr('data-src');
-            const subtitle = $(".info > .author > .chapter-link > a", manga).last().text().trim();
+            const subtitle = $('.info > .author > .chapter-link > a', manga).last().text().trim();
             if (!id || !title)
                 return;
             popularItems.push(App.createPartialSourceManga({
