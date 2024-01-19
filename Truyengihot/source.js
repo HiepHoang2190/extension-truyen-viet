@@ -475,10 +475,10 @@ const isLastPage = ($) => {
 };
 exports.isLastPage = isLastPage;
 exports.TruyengihotInfo = {
-    version: '1.0.8',
+    version: '1.0.9',
     name: 'Truyengihot',
     icon: 'icon.png',
-    author: 'HiepHoang2',
+    author: 'HiepHoang3',
     authorWebsite: 'https://github.com/HiepHoang2190/',
     description: 'Extension that pulls manga from Truyengihot.',
     contentRating: types_1.ContentRating.EVERYONE,
