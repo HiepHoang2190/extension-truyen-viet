@@ -476,10 +476,10 @@ const isLastPage = ($) => {
 };
 exports.isLastPage = isLastPage;
 exports.TruyengihotInfo = {
-    version: '1.0.14',
+    version: '1.0.15',
     name: 'Truyengihot',
     icon: 'icon.png',
-    author: 'HiepHoang8',
+    author: 'HiepHoang9',
     authorWebsite: 'https://github.com/HiepHoang2190/',
     description: 'Extension that pulls manga from Truyengihot.',
     contentRating: types_1.ContentRating.EVERYONE,
@@ -526,7 +526,7 @@ class Truyengihot {
     async DOMHTML(url) {
         const request = App.createRequest({
             url: url,
-            method: 'POST',
+            method: 'GET',
         });
         const response = await this.requestManager.schedule(request, 1);
         return this.cheerio.load(response.data);
@@ -902,14 +902,14 @@ class Parser {
     parsePopularSection($) {
         const popularItems = [];
         $('.contentList li').each((_, manga) => {
-            // const title = $('.info > .title > a', manga).first().text();
-            // const id = $('.info > .title > a', manga).attr('href')?.split('/').pop();
-            // const image = $('.thumbBox > .thumb > img', manga).first().attr('data-src');
-            // const subtitle = $('.info > .author > .chapter-link > a', manga).last().text().trim();
-            const title = 'VỤ BÊ BỐI TRÁ HÌNH';
-            const id = 'truyen-vu-be-boi-tra-hinh.html';
-            const image = '//cdn.cdnimgtgh.com/covers/0_ea4c9e80-7d41-44c1-989f-fd868e46a405.jpg';
-            const subtitle = 'C 23.2';
+            const title = $('.info > .title > a', manga).first().text();
+            const id = $('.info > .title > a', manga).attr('href')?.split('/').pop();
+            const image = $('.thumbBox > .thumb > img', manga).first().attr('data-src');
+            const subtitle = $('.info > .author > .chapter-link > a', manga).last().text().trim();
+            // const title = 'VỤ BÊ BỐI TRÁ HÌNH';
+            // const id = 'truyen-vu-be-boi-tra-hinh.html';
+            // const image = '//cdn.cdnimgtgh.com/covers/0_ea4c9e80-7d41-44c1-989f-fd868e46a405.jpg';
+            // const subtitle = 'C 23.2';
             if (!id || !title)
                 return;
             popularItems.push(App.createPartialSourceManga({
