@@ -476,10 +476,10 @@ const isLastPage = ($) => {
 };
 exports.isLastPage = isLastPage;
 exports.TruyengihotInfo = {
-    version: '1.0.13',
+    version: '1.0.14',
     name: 'Truyengihot',
     icon: 'icon.png',
-    author: 'HiepHoang7',
+    author: 'HiepHoang8',
     authorWebsite: 'https://github.com/HiepHoang2190/',
     description: 'Extension that pulls manga from Truyengihot.',
     contentRating: types_1.ContentRating.EVERYONE,
@@ -501,7 +501,7 @@ class Truyengihot {
         this.cheerio = cheerio;
         this.requestManager = App.createRequestManager({
             requestsPerSecond: 4,
-            requestTimeout: 15000,
+            requestTimeout: 20000,
             interceptor: {
                 interceptRequest: async (request) => {
                     request.headers = {
@@ -526,7 +526,7 @@ class Truyengihot {
     async DOMHTML(url) {
         const request = App.createRequest({
             url: url,
-            method: 'GET',
+            method: 'POST',
         });
         const response = await this.requestManager.schedule(request, 1);
         return this.cheerio.load(response.data);
