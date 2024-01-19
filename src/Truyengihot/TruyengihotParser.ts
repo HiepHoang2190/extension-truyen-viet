@@ -37,18 +37,19 @@ export class Parser {
     parseMangaDetails($: CheerioStatic, mangaId: string): SourceManga {
         const tags: Tag[] = [];
 
-        $('li.kind > p.col-xs-8 > a').each((_: any, obj: any) => {
+        $('.cover-spec > .cover-artist.tag_area > a.manga-tags').each((_: any, obj: any) => {
             const label = $(obj).text();
             const id = $(obj).attr('href')?.split('/')[4] ?? label;
             tags.push(App.createTag({ label, id }));
         });
 
-        const titles = $('h1.title-detail').text().trim();
-        const author = $('ul.list-info > li.author > p.col-xs-8').text();
-        const artist = $('ul.list-info > li.author > p.col-xs-8').text();
-        const image = 'https:' + $('div.col-image > img').attr('src');
-        const desc = $('div.detail-content > p').text();
-        const status = $('ul.list-info > li.status > p.col-xs-8').text();
+        const titles = $('h2.cover-title').text().trim();
+        const author = $('.cover-wrapper > .cover-spec > .cover-artist').first().text();
+        // const artist = $('ul.list-info > li.author > p.col-xs-8').text();
+        const image = 'https:' + $('.cover-wrapper > .cover-image > img').attr('data-src');
+        const desc = $('.description .textArea').text();
+        // const status = $('ul.list-info > li.status > p.col-xs-8').text();
+        const status = 'going';
         const rating = parseFloat($('span[itemprop="ratingValue"]').text());
 
         return App.createSourceManga({
@@ -56,7 +57,7 @@ export class Parser {
             mangaInfo: App.createMangaInfo({
                 titles: [titles],
                 author,
-                artist,
+                // artist,
                 image,
                 desc,
                 status,
@@ -69,12 +70,12 @@ export class Parser {
     parseChapterList($: CheerioStatic): Chapter[] {
         const chapters: Chapter[] = [];
 
-        $('div.list-chapter > nav > ul > li.row:not(.heading)').each((_: any, obj: any) => {
-            const id = String($('div.chapter a', obj).attr('href')).split('/').slice(4).join('/');
-            const time = $('div.col-xs-4', obj).text();
-            const group = $('div.col-xs-3', obj).text();
-            let name = $('div.chapter a', obj).text();
-            const chapNum = $('div.chapter a', obj).text().split(' ')[1];
+        $('ul.episode-list > li').each((_: any, obj: any) => {
+            const id = String($('a.item', obj).attr('href')).split('/').slice(4).join('/');
+            const time = $('.itemCols .info .date', obj).text();
+            const group = $('.itemCols .info .views', obj).text();
+            let name = $('.itemCols .info .no', obj).text();
+            const chapNum = $('.itemCols .info .no', obj).text().split(' ')[1];
             name = name.includes(':') ? String(name.split(':')[1]).trim() : '';
             const timeFinal = this.convertTime(time);
 
@@ -98,9 +99,9 @@ export class Parser {
     parseChapterDetails($: CheerioStatic): string[] {
         const pages: string[] = [];
 
-        $('div.reading-detail > div.page-chapter > img').each((_: any, obj: any) => {
-            if (!obj.attribs['data-original']) return;
-            const link = obj.attribs['data-original'];
+        $('.contentChapter > img').each((_: any, obj: any) => {
+            if (!obj.attribs['data-src']) return;
+            const link = obj.attribs['data-src'];
             pages.push(link.indexOf('https') === -1 ? 'https:' + link : link);
         });
 
@@ -110,12 +111,12 @@ export class Parser {
     parseSearchResults($: CheerioStatic): PartialSourceManga[] {
         const tiles: PartialSourceManga[] = [];
 
-        $('div.item', 'div.row').each((_: any, manga: any) => {
-            const title = $('figure.clearfix > figcaption > h3 > a', manga).first().text();
-            const id = $('figure.clearfix > div.image > a', manga).attr('href')?.split('/').pop();
-            let image = $('figure.clearfix > div.image > a > img', manga).first().attr('data-original');
+        $('.widgetWrapper .contentWidget ul.contentList li').each((_: any, manga: any) => {
+            const title = $('.info .title a', manga).first().text();
+            const id = $('a', manga).attr('href')?.split('/').pop();
+            let image = $('.thumbBox .thumb img', manga).first().attr('data-src');
             image = !image ? "https://i.imgur.com/GYUxEX8.png" : 'https:' + image
-            const subtitle = $("figure.clearfix > figcaption > ul > li.chapter:nth-of-type(1) > a", manga).last().text().trim();
+            const subtitle = $('.author .chapter-link a', manga).last().text().trim();
             if (!id || !title) return;
 
             tiles.push(App.createPartialSourceManga({
@@ -182,25 +183,25 @@ export class Parser {
         return tagSections;
     }
 
-    parseFeaturedSection($: CheerioStatic): PartialSourceManga[] {
-        const featuredItems: PartialSourceManga[] = [];
+    // parseFeaturedSection($: CheerioStatic): PartialSourceManga[] {
+    //     const featuredItems: PartialSourceManga[] = [];
 
-        $('div.item', 'div.altcontent1').each((_: any, manga: any) => {
-            const title = $('.slide-caption > h3 > a', manga).text();
-            const id = $('a', manga).attr('href')?.split('/').pop();
-            const image = $('a > img.lazyOwl', manga).attr('data-src');
-            const subtitle = $('.slide-caption > a', manga).text().trim() + ' - ' + $('.slide-caption > .time', manga).text().trim();
-            if (!id || !title) return;
-            featuredItems.push(App.createPartialSourceManga({
-                mangaId: String(id),
-                image: !image ? "https://i.imgur.com/GYUxEX8.png" : 'https:' + image,
-                title: title,
-                subtitle: subtitle,
-            }));
-        });
+    //     $('div.item', 'div.altcontent1').each((_: any, manga: any) => {
+    //         const title = $('.slide-caption > h3 > a', manga).text();
+    //         const id = $('a', manga).attr('href')?.split('/').pop();
+    //         const image = $('a > img.lazyOwl', manga).attr('data-src');
+    //         const subtitle = $('.slide-caption > a', manga).text().trim() + ' - ' + $('.slide-caption > .time', manga).text().trim();
+    //         if (!id || !title) return;
+    //         featuredItems.push(App.createPartialSourceManga({
+    //             mangaId: String(id),
+    //             image: !image ? "https://i.imgur.com/GYUxEX8.png" : 'https:' + image,
+    //             title: title,
+    //             subtitle: subtitle,
+    //         }));
+    //     });
 
-        return featuredItems;
-    }
+    //     return featuredItems;
+    // }
 
     parsePopularSection($: CheerioStatic): PartialSourceManga[] {
         const popularItems: PartialSourceManga[] = [];
@@ -209,7 +210,12 @@ export class Parser {
             const title = $('.info > .title > a', manga).first().text();
             const id = $('.info > .title > a', manga).attr('href')?.split('/').pop();
             const image = $('.thumbBox > .thumb > img', manga).first().attr('data-src');
-            const subtitle = $(".info > .author > .chapter-link > a", manga).last().text().trim();
+            const subtitle = $('.info > .author > .chapter-link > a', manga).last().text().trim();
+            // const title = 'VỤ BÊ BỐI TRÁ HÌNH';
+            // const id = 'truyen-vu-be-boi-tra-hinh.html';
+            // const image = '//cdn.cdnimgtgh.com/covers/0_ea4c9e80-7d41-44c1-989f-fd868e46a405.jpg';
+            // const subtitle = 'C 23.2';
+
             if (!id || !title) return;
             popularItems.push(App.createPartialSourceManga({
                 mangaId: String(id),
@@ -222,95 +228,95 @@ export class Parser {
         return popularItems;
     }
 
-    parseNewUpdatedSection($: CheerioStatic): PartialSourceManga[] {
-        const newUpdatedItems: PartialSourceManga[] = [];
+    // parseNewUpdatedSection($: CheerioStatic): PartialSourceManga[] {
+    //     const newUpdatedItems: PartialSourceManga[] = [];
 
-        $('div.item', 'div.row').slice(0, 20).each((_: any, manga: any) => {
-            const title = $('figure.clearfix > figcaption > h3 > a', manga).first().text();
-            const id = $('figure.clearfix > div.image > a', manga).attr('href')?.split('/').pop();
-            const image = $('figure.clearfix > div.image > a > img', manga).first().attr('data-original');
-            const subtitle = $("figure.clearfix > figcaption > ul > li.chapter:nth-of-type(1) > a", manga).last().text().trim();
-            if (!id || !title) return;
-            newUpdatedItems.push(App.createPartialSourceManga({
-                mangaId: String(id),
-                image: !image ? "https://i.imgur.com/GYUxEX8.png" : 'https:' + image,
-                title: title,
-                subtitle: subtitle,
-            }));
-        });
+    //     $('div.item', 'div.row').slice(0, 20).each((_: any, manga: any) => {
+    //         const title = $('figure.clearfix > figcaption > h3 > a', manga).first().text();
+    //         const id = $('figure.clearfix > div.image > a', manga).attr('href')?.split('/').pop();
+    //         const image = $('figure.clearfix > div.image > a > img', manga).first().attr('data-original');
+    //         const subtitle = $("figure.clearfix > figcaption > ul > li.chapter:nth-of-type(1) > a", manga).last().text().trim();
+    //         if (!id || !title) return;
+    //         newUpdatedItems.push(App.createPartialSourceManga({
+    //             mangaId: String(id),
+    //             image: !image ? "https://i.imgur.com/GYUxEX8.png" : 'https:' + image,
+    //             title: title,
+    //             subtitle: subtitle,
+    //         }));
+    //     });
 
-        return newUpdatedItems;
-    }
+    //     return newUpdatedItems;
+    // }
 
-    parseHotSection($: CheerioStatic): PartialSourceManga[] {
-        const topWeek: PartialSourceManga[] = [];
+    // parseHotSection($: CheerioStatic): PartialSourceManga[] {
+    //     const topWeek: PartialSourceManga[] = [];
 
-        $('div.item', 'div.row').slice(0, 20).each((_: any, manga: any) => {
-            const title = $('figure.clearfix > figcaption > h3 > a', manga).first().text();
-            const id = $('figure.clearfix > div.image > a', manga).attr('href')?.split('/').pop();
-            const image = $('figure.clearfix > div.image > a > img', manga).first().attr('data-original');
-            const subtitle = $("figure.clearfix > figcaption > ul > li.chapter:nth-of-type(1) > a", manga).last().text().trim();
-            if (!id || !title) return;
-            topWeek.push(App.createPartialSourceManga({
-                mangaId: String(id),
-                image: !image ? "https://i.imgur.com/GYUxEX8.png" : 'https:' + image,
-                title: title,
-                subtitle: subtitle,
-            }));
-        });
+    //     $('div.item', 'div.row').slice(0, 20).each((_: any, manga: any) => {
+    //         const title = $('figure.clearfix > figcaption > h3 > a', manga).first().text();
+    //         const id = $('figure.clearfix > div.image > a', manga).attr('href')?.split('/').pop();
+    //         const image = $('figure.clearfix > div.image > a > img', manga).first().attr('data-original');
+    //         const subtitle = $("figure.clearfix > figcaption > ul > li.chapter:nth-of-type(1) > a", manga).last().text().trim();
+    //         if (!id || !title) return;
+    //         topWeek.push(App.createPartialSourceManga({
+    //             mangaId: String(id),
+    //             image: !image ? "https://i.imgur.com/GYUxEX8.png" : 'https:' + image,
+    //             title: title,
+    //             subtitle: subtitle,
+    //         }));
+    //     });
 
-        return topWeek;
-    }
+    //     return topWeek;
+    // }
 
-    parseNewAddedSection($: CheerioStatic): PartialSourceManga[] {
-        const newAddedItems: PartialSourceManga[] = [];
+    // parseNewAddedSection($: CheerioStatic): PartialSourceManga[] {
+    //     const newAddedItems: PartialSourceManga[] = [];
 
-        $('div.item', 'div.row').slice(0, 20).each((_: any, manga: any) => {
-            const title = $('figure.clearfix > figcaption > h3 > a', manga).first().text();
-            const id = $('figure.clearfix > div.image > a', manga).attr('href')?.split('/').pop();
-            const image = $('figure.clearfix > div.image > a > img', manga).first().attr('data-original');
-            const subtitle = $("figure.clearfix > figcaption > ul > li.chapter:nth-of-type(1) > a", manga).last().text().trim();
-            if (!id || !title) return;
-            newAddedItems.push(App.createPartialSourceManga({
-                mangaId: String(id),
-                image: !image ? "https://i.imgur.com/GYUxEX8.png" : 'https:' + image,
-                title: title,
-                subtitle: subtitle,
-            }));
-        });
+    //     $('div.item', 'div.row').slice(0, 20).each((_: any, manga: any) => {
+    //         const title = $('figure.clearfix > figcaption > h3 > a', manga).first().text();
+    //         const id = $('figure.clearfix > div.image > a', manga).attr('href')?.split('/').pop();
+    //         const image = $('figure.clearfix > div.image > a > img', manga).first().attr('data-original');
+    //         const subtitle = $("figure.clearfix > figcaption > ul > li.chapter:nth-of-type(1) > a", manga).last().text().trim();
+    //         if (!id || !title) return;
+    //         newAddedItems.push(App.createPartialSourceManga({
+    //             mangaId: String(id),
+    //             image: !image ? "https://i.imgur.com/GYUxEX8.png" : 'https:' + image,
+    //             title: title,
+    //             subtitle: subtitle,
+    //         }));
+    //     });
 
-        return newAddedItems;
-    }
+    //     return newAddedItems;
+    // }
 
-    parseFullSection($: CheerioStatic): PartialSourceManga[] {
-        const fullItems: PartialSourceManga[] = [];
+    // parseFullSection($: CheerioStatic): PartialSourceManga[] {
+    //     const fullItems: PartialSourceManga[] = [];
 
-        $('div.item', 'div.row').slice(0, 20).each((_: any, manga: any) => {
-            const title = $('figure.clearfix > figcaption > h3 > a', manga).first().text();
-            const id = $('figure.clearfix > div.image > a', manga).attr('href')?.split('/').pop();
-            const image = $('figure.clearfix > div.image > a > img', manga).first().attr('data-original');
-            const subtitle = $("figure.clearfix > figcaption > ul > li.chapter:nth-of-type(1) > a", manga).last().text().trim();
-            if (!id || !title) return;
-            fullItems.push(App.createPartialSourceManga({
-                mangaId: String(id),
-                image: !image ? "https://i.imgur.com/GYUxEX8.png" : 'https:' + image,
-                title: title,
-                subtitle: subtitle,
-            }));
-        });
+    //     $('div.item', 'div.row').slice(0, 20).each((_: any, manga: any) => {
+    //         const title = $('figure.clearfix > figcaption > h3 > a', manga).first().text();
+    //         const id = $('figure.clearfix > div.image > a', manga).attr('href')?.split('/').pop();
+    //         const image = $('figure.clearfix > div.image > a > img', manga).first().attr('data-original');
+    //         const subtitle = $("figure.clearfix > figcaption > ul > li.chapter:nth-of-type(1) > a", manga).last().text().trim();
+    //         if (!id || !title) return;
+    //         fullItems.push(App.createPartialSourceManga({
+    //             mangaId: String(id),
+    //             image: !image ? "https://i.imgur.com/GYUxEX8.png" : 'https:' + image,
+    //             title: title,
+    //             subtitle: subtitle,
+    //         }));
+    //     });
 
-        return fullItems;
-    }
+    //     return fullItems;
+    // }
 
     parseViewMoreItems($: CheerioStatic): PartialSourceManga[] {
         const mangas: PartialSourceManga[] = [];
         const collectedIds: Set<string> = new Set();
 
-        $('div.item', 'div.row').each((_: any, manga: any) => {
-            const title = $('figure.clearfix > figcaption > h3 > a', manga).first().text();
-            const id = $('figure.clearfix > div.image > a', manga).attr('href')?.split('/').pop();
-            const image = $('figure.clearfix > div.image > a > img', manga).first().attr('data-original');
-            const subtitle = $("figure.clearfix > figcaption > ul > li.chapter:nth-of-type(1) > a", manga).last().text().trim();
+        $('.widgetWrapper .contentList li').each((_: any, manga: any) => {
+            const title = $('.info .title a', manga).first().text();
+            const id = $('.info .title a', manga).attr('href')?.split('/').pop();
+            const image = $('.thumbBox .thumb  img', manga).first().attr('data-src');
+            const subtitle = $(".info .chapter-link a", manga).last().text().trim();
 
             if (!id || !title) return;
             if (!collectedIds.has(id)) {
@@ -327,17 +333,17 @@ export class Parser {
         return mangas;
     }
 
-    parseUpdatedManga(updateManga: any, time: Date, ids: string[]): MangaUpdates {
-        const returnObject: MangaUpdates = {
-            ids: []
-        };
+    // parseUpdatedManga(updateManga: any, time: Date, ids: string[]): MangaUpdates {
+    //     const returnObject: MangaUpdates = {
+    //         ids: []
+    //     };
 
-        for (const elem of updateManga) {
-            if (ids.includes(elem.id) && time < this.convertTime(elem.time)) {
-                returnObject.ids.push(elem.id);
-            }
-        }
+    //     for (const elem of updateManga) {
+    //         if (ids.includes(elem.id) && time < this.convertTime(elem.time)) {
+    //             returnObject.ids.push(elem.id);
+    //         }
+    //     }
 
-        return returnObject;
-    }
+    //     return returnObject;
+    // }
 }

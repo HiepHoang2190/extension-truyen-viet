@@ -22,24 +22,25 @@ import {
 
 import { Parser } from './TruyengihotParser';
 
-const DOMAIN = 'https://Truyengihotqua.net/';
+const DOMAIN = 'https://truyengihotqua.net/';
 
 export const isLastPage = ($: CheerioStatic): boolean => {
-    const current = $('ul.pagination > li.active > a').text();
-    let total = $('ul.pagination > li.PagerSSCCells:last-child').text();
-
-    if (current) {
-        total = total ?? '';
-        return (+total) === (+current); //+ => convert value to number
-    }
-    return true;
+    const current = $('ul.pagination > li > a.current').text();
+ 
+    const lastPage = $('ul.pagination > li.page-next > a').attr('href')?.split('=').pop();
+    return (+current) === (+String(lastPage))
+    // if (current) {
+    //     total = total ?? '';
+    //     return (+total) === (+current); //+ => convert value to number
+    // }
+    // return true;
 }
 
 export const TruyengihotInfo: SourceInfo = {
-    version: '1.0.8',
+    version: '1.0.15',
     name: 'Truyengihot',
     icon: 'icon.png',
-    author: 'HiepHoang2',
+    author: 'HiepHoang9',
     authorWebsite: 'https://github.com/HiepHoang2190/',
     description: 'Extension that pulls manga from Truyengihot.',
     contentRating: ContentRating.EVERYONE,
@@ -63,7 +64,7 @@ export class Truyengihot implements SearchResultsProviding, MangaProviding, Chap
 
     readonly requestManager = App.createRequestManager({
         requestsPerSecond: 4,
-        requestTimeout: 15000,
+        requestTimeout: 20000,
         interceptor: {
             interceptRequest: async (request: Request): Promise<Request> => {
                 request.headers = {
@@ -125,12 +126,12 @@ export class Truyengihot implements SearchResultsProviding, MangaProviding, Chap
         let page = metadata?.page ?? 1;
 
         const search = {
-            genres: '',
-            exgenres: '',
-            gender: "-1",
-            status: "-1",
-            minchapter: "1",
-            sort: "0"
+            // genres: '',
+            // exgenres: '',
+            // gender: "-1",
+            // status: "-1",
+            // minchapter: "1",
+            // sort: "0"
 
         };
 
@@ -147,27 +148,26 @@ export class Truyengihot implements SearchResultsProviding, MangaProviding, Chap
         for (const value of tags) {
             if (value.indexOf('.') === -1) {
                 genres.push(value);
-            } else {
-                const [key, val] = value.split(".");
-                switch (key) {
-                    case 'minchapter':
-                        search.minchapter = String(val);
-                        break;
-                    case 'gender':
-                        search.gender = String(val);
-                        break;
-                    case 'sort':
-                        search.sort = String(val);
-                        break;
-                    case 'status':
-                        search.status = String(val);
-                        break;
-                }
             }
+            //  else {
+            //     const [key, val] = value.split(".");
+            //     switch (key) {
+               
+            //         case 'gender':
+            //             search.gender = String(val);
+            //             break;
+            //         case 'sort':
+            //             search.sort = String(val);
+            //             break;
+            //         case 'status':
+            //             search.status = String(val);
+            //             break;
+            //     }
+            // }
         }
-        search.genres = genres.join(",");
-        search.exgenres = exgenres.join(",");
-        const paramExgenres = search.exgenres ? `&notgenres=${search.exgenres}` : '';
+        // search.genres = genres.join(",");
+        // search.exgenres = exgenres.join(",");
+        // const paramExgenres = search.exgenres ? `&notgenres=${search.exgenres}` : '';
 
         const url = `${DOMAIN}${query.title ? '/danh-sach-truyen.html' : '/danh-sach-truyen.html'}`;
         const param = encodeURI(`?text_add=${query.title ?? ''}`);
@@ -191,9 +191,10 @@ export class Truyengihot implements SearchResultsProviding, MangaProviding, Chap
             // App.createHomeSection({ id: 'new_added', title: "Truyện Mới Thêm Gần Đây", containsMoreItems: true, type: HomeSectionType.singleRowNormal }),
             // App.createHomeSection({ id: 'full', title: "Truyện Đã Hoàn Thành", containsMoreItems: true, type: HomeSectionType.singleRowNormal }),
         ];
-
+      
         for (const section of sections) {
             sectionCallback(section);
+            
             let url: string;
             switch (section.id) {
                 // case 'featured':
@@ -219,15 +220,16 @@ export class Truyengihot implements SearchResultsProviding, MangaProviding, Chap
             }
 
             const $ = await this.DOMHTML(url);
+          
             switch (section.id) {
                 // case 'featured':
                 //     section.items = this.parser.parseFeaturedSection($);
                 //     break;
                 case 'new_18':
-                    section.items = this.parser.parsePopularSection($);
+                    section.items = this.parser.parsePopularSection($);              
                     break;
                 case 'hot':
-                    section.items = this.parser.parsePopularSection($);
+                    section.items = this.parser.parsePopularSection($);         
                     break;
                 // case 'new_updated':
                 //     section.items = this.parser.parseNewUpdatedSection($);
@@ -296,38 +298,38 @@ export class Truyengihot implements SearchResultsProviding, MangaProviding, Chap
         });
     }
 
-    async getSearchTags(): Promise<TagSection[]> {
-        const url = `${DOMAIN}`;
-        const $ = await this.DOMHTML(url);
-        return this.parser.parseTags($);
-    }
+    // async getSearchTags(): Promise<TagSection[]> {
+    //     const url = `${DOMAIN}`;
+    //     const $ = await this.DOMHTML(url);
+    //     return this.parser.parseTags($);
+    // }
 
-    async filterUpdatedManga(mangaUpdatesFoundCallback: (updates: MangaUpdates) => void, time: Date, ids: string[]): Promise<void> {
-        const updateManga: any = [];
-        const pages = 10;
-        for (let i = 1; i < pages + 1; i++) {
-            // const request = createRequestObject({
-            //     url: DOMAIN + '?page=' + i,
-            //     method: 'GET',
-            // })
-            // const response = await this.requestManager.schedule(request, 1)
-            // const $ = this.cheerio.load(response.data);
-            let url = `${DOMAIN}?page=${i}`
-            const $ = await this.DOMHTML(url);
-            const updateManga = $('div.item', 'div.row').toArray().map(manga => {
-                const id = $('figure.clearfix > div.image > a', manga).attr('href')?.split('/').pop();
-                const time = $("figure.clearfix > figcaption > ul > li.chapter:nth-of-type(1) > i", manga).last().text().trim();
-                return {
-                    id: id,
-                    time: time
-                };
-            });
+    // async filterUpdatedManga(mangaUpdatesFoundCallback: (updates: MangaUpdates) => void, time: Date, ids: string[]): Promise<void> {
+    //     const updateManga: any = [];
+    //     const pages = 10;
+    //     for (let i = 1; i < pages + 1; i++) {
+    //         // const request = createRequestObject({
+    //         //     url: DOMAIN + '?page=' + i,
+    //         //     method: 'GET',
+    //         // })
+    //         // const response = await this.requestManager.schedule(request, 1)
+    //         // const $ = this.cheerio.load(response.data);
+    //         let url = `${DOMAIN}?page=${i}`
+    //         const $ = await this.DOMHTML(url);
+    //         const updateManga = $('div.item', 'div.row').toArray().map(manga => {
+    //             const id = $('figure.clearfix > div.image > a', manga).attr('href')?.split('/').pop();
+    //             const time = $("figure.clearfix > figcaption > ul > li.chapter:nth-of-type(1) > i", manga).last().text().trim();
+    //             return {
+    //                 id: id,
+    //                 time: time
+    //             };
+    //         });
 
-            updateManga.push(...updateManga);
+    //         updateManga.push(...updateManga);
 
-        }
+    //     }
 
-        const returnObject = this.parser.parseUpdatedManga(updateManga, time, ids)
-        mangaUpdatesFoundCallback(App.createMangaUpdates(returnObject))
-    }
+    //     const returnObject = this.parser.parseUpdatedManga(updateManga, time, ids)
+    //     mangaUpdatesFoundCallback(App.createMangaUpdates(returnObject))
+    // }
 }
