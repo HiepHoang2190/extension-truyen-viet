@@ -1439,7 +1439,7 @@ exports.Blogtruyen = exports.BlogtruyenInfo = exports.isLastPage = void 0;
 /* eslint-disable max-len */
 const types_1 = require("@paperback/types");
 const BlogtruyenParser_1 = require("./BlogtruyenParser");
-const DOMAIN = 'https://blogtruyen.vn/';
+const DOMAIN = 'https://blogtruyenvn.com/';
 const isLastPage = ($) => {
     const lastPage = Number($('ul.pagination > li:last-child > a').attr('href')?.split('-').pop());
     const currentPage = Number($('ul.pagination > li > select > option').find(':selected').text().split(' ')[1]);
