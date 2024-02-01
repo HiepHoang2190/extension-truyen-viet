@@ -21,7 +21,7 @@ import {
 
 import { Parser } from './BlogtruyenParser';
 
-const DOMAIN = 'https://blogtruyen.vn/';
+const DOMAIN = 'https://blogtruyenvn.com/';
 
 export const isLastPage = ($: CheerioStatic): boolean => {
     const lastPage = Number($('ul.pagination > li:last-child > a').attr('href')?.split('-').pop());
