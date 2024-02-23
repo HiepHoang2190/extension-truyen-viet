@@ -21,7 +21,7 @@ import {
 
 import { Parser } from './BlogtruyenParser';
 
-const DOMAIN = 'https://blogtruyenvn.com/';
+const DOMAIN = 'https://blogtruyenvn.org/';
 
 export const isLastPage = ($: CheerioStatic): boolean => {
     const lastPage = Number($('ul.pagination > li:last-child > a').attr('href')?.split('-').pop());
@@ -31,7 +31,7 @@ export const isLastPage = ($: CheerioStatic): boolean => {
 };
 
 export const BlogtruyenInfo: SourceInfo = {
-    version: '1.0.3',
+    version: '1.0.5',
     name: 'Blogtruyen',
     icon: 'icon.png',
     author: 'AlanNois',
